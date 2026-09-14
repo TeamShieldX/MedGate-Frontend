@@ -23,7 +23,10 @@ export default function PatientListPage() {
           Viewing as: <strong>{currentRole}</strong>
         </span>
       </div>
-      {loading ? <p>Loading patient list...</p> : <PatientList patients={patients} />}
+      {loading ? <p>Loading patient list...</p> : <PatientList
+  patients={patients}
+  role={currentRole}
+/>}
     </div>
   );
 }
