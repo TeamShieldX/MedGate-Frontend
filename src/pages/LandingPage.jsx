@@ -19,6 +19,7 @@ export default function LandingPage() {
     firstName: "James",
     lastName: "Smith",
     birthDate: "1974-05-12",
+    gender: "M",
     phone: "555-0142",
     address: "742 Healthcare Ave, Metro City",
     primaryCondition: "Hypertension",
@@ -34,34 +35,57 @@ export default function LandingPage() {
   const isDoctor = simulatorRole === 'Doctor';
   const isAdmin = simulatorRole === 'Administrator';
 
+  // Build JSON preview filtered by role
+  const getFilteredJson = () => {
+    const json = { id: samplePatient.id, gender: samplePatient.gender, birthDate: samplePatient.birthDate };
+    if (!isResearcher) {
+      json.firstName = samplePatient.firstName;
+      json.lastName = samplePatient.lastName;
+      json.phone = samplePatient.phone;
+      json.address = samplePatient.address;
+    } else {
+      json.name = "[REDACTED_FOR_RESEARCHER]";
+      json.contact = "[REDACTED_FOR_RESEARCHER]";
+    }
+
+    if (!isReceptionist) {
+      json.primaryCondition = samplePatient.primaryCondition;
+      json.medications = samplePatient.medications;
+      json.observations = samplePatient.observations;
+    } else {
+      json.clinicalCondition = "[HIDDEN_RECEPTIONIST_ROLE]";
+      json.medications = "[HIDDEN_RECEPTIONIST_ROLE]";
+    }
+
+    if (isDoctor || isAdmin) {
+      json.confidentialNotes = samplePatient.confidentialNotes;
+    } else {
+      json.confidentialNotes = `[REDACTED_FOR_${simulatorRole.toUpperCase()}]`;
+    }
+
+    if (!isResearcher) {
+      json.appointments = samplePatient.appointments;
+    } else {
+      json.appointments = "[REDACTED_FOR_RESEARCHER]";
+    }
+
+    return JSON.stringify(json, null, 2);
+  };
+
   return (
     <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
-      {/* Hero Section */}
-      <section style={{ textAlign: 'center', marginBottom: '48px', paddingTop: '12px' }}>
-        <h1
-          style={{
-            fontSize: '2.25rem',
-            lineHeight: 1.25,
-            marginBottom: '20px',
-            letterSpacing: '-0.025em',
-            textAlign: 'center',
-            maxWidth: '920px',
-            margin: '0 auto 20px',
-          }}
-        >
+      {/* Hero Section (Left-aligned typography inside centered page container) */}
+      <section className="hero-section">
+        <div className="hero-tag">
+          <span>●</span>
+          <span>ZERO-TRUST GATEWAY &bull; 100% AUDIT INTEGRITY</span>
+        </div>
+
+        <h1 className="hero-title">
           Every access to a patient record is checked, logged, and provably tamper-evident.
         </h1>
 
-        <p
-          style={{
-            fontSize: '1.08rem',
-            color: 'var(--text-secondary)',
-            marginBottom: '32px',
-            textAlign: 'center',
-            maxWidth: '740px',
-            margin: '0 auto 32px',
-          }}
-        >
+        <p className="hero-lead">
           MedGate is a zero-trust electronic health records gateway providing runtime
           role-based access control, dynamic field-level data redaction, and an append-only
           SHA-256 cryptographic audit ledger.
@@ -90,8 +114,8 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', marginTop: '28px' }}>
+        {/* Hero Actions */}
+        <div className="hero-actions">
           <button
             type="button"
             onClick={handleTryDemo}
@@ -107,6 +131,9 @@ export default function LandingPage() {
           >
             Login
           </Link>
+          <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginLeft: '8px' }}>
+            5 workforce roles &bull; Live Neon PostgreSQL backend
+          </span>
         </div>
       </section>
 
@@ -120,7 +147,7 @@ export default function LandingPage() {
             </p>
           </div>
           <span className="status-badge neutral font-mono">
-            Latency: ~0.034ms
+            Latency: ~0.0343ms
           </span>
         </div>
 
@@ -140,15 +167,15 @@ export default function LandingPage() {
           ))}
         </div>
 
-        {/* Simulator Content Grid */}
+        {/* Split Screen Simulator Console */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px', marginTop: '16px' }}>
-          {/* Rendered Patient View for Role */}
-          <div style={{ border: '1px solid var(--border-subtle)', padding: '18px', backgroundColor: 'var(--code-bg)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '8px' }}>
+          {/* Left Pane: Rendered UI Card */}
+          <div style={{ border: '1px solid var(--border-subtle)', padding: '20px', backgroundColor: 'var(--bg-surface)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '14px', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '8px' }}>
               <span className="font-mono" style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-                Client View: {simulatorRole}
+                Client Render: {simulatorRole}
               </span>
-              <span className="status-badge granted">gated</span>
+              <span className="status-badge granted">gated runtime</span>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.88rem' }}>
@@ -219,54 +246,65 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Active Policy Rules Breakdown */}
-          <div style={{ border: '1px solid var(--border-subtle)', padding: '18px', backgroundColor: 'var(--bg-surface)' }}>
-            <span className="font-mono" style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '12px' }}>
-              Enforced Policy Rules for {simulatorRole}
-            </span>
+          {/* Right Pane: API Inspector & JSON Terminal */}
+          <div className="terminal-box">
+            <div className="terminal-header">
+              <span>GATEWAY HTTP INSPECTOR</span>
+              <span style={{ color: 'var(--status-granted)' }}>HTTP/1.1 200 OK</span>
+            </div>
+            <div style={{ color: 'var(--text-secondary)', marginBottom: '8px', fontSize: '0.78rem' }}>
+              &gt; GET /patients/pat-901-syn<br />
+              &gt; Host: medgatebackend.onrender.com<br />
+              &gt; x-user-role: <span style={{ color: 'var(--text-primary)' }}>{simulatorRole}</span><br />
+              &gt; x-access-check: <span style={{ color: 'var(--status-granted)' }}>0.0343ms</span>
+            </div>
+            <pre style={{ color: 'var(--text-primary)', fontSize: '0.78rem', overflowX: 'auto', margin: 0 }}>
+              {getFilteredJson()}
+            </pre>
+          </div>
+        </div>
+      </section>
 
-            <ul style={{ paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-              {isDoctor && (
-                <>
-                  <li>Full clinical chart read/write authorization.</li>
-                  <li>Access to sensitive psychiatric evaluations and clinical notes.</li>
-                  <li>Direct access to relational graphs (prescriptions, encounters, lab vitals).</li>
-                  <li>System audit log reads restricted to Administrator role.</li>
-                </>
-              )}
-              {isNurse && (
-                <>
-                  <li>Authorized to read and record medications, observations, encounters, and allergies.</li>
-                  <li><strong>Confidential Notes restricted:</strong> Filtered out to protect psychiatric confidentiality.</li>
-                  <li>Patient demographics and contact information visible for bedside verification.</li>
-                  <li>System audit log access strictly denied (403).</li>
-                </>
-              )}
-              {isReceptionist && (
-                <>
-                  <li><strong>All clinical data restricted:</strong> Diagnoses, medications, vitals, and notes masked.</li>
-                  <li>Patient demographic and appointment scheduling access authorized.</li>
-                  <li>Prevents front-desk disclosure of sensitive patient medical conditions.</li>
-                  <li>System audit log access strictly denied (403).</li>
-                </>
-              )}
-              {isResearcher && (
-                <>
-                  <li><strong>All direct identifiers (PII) redacted:</strong> Name, address, phone number stripped.</li>
-                  <li>Clinical trends (conditions, observations, lab vitals, medications) preserved for epidemiology.</li>
-                  <li>Appointments and scheduling data withheld to prevent location tracking.</li>
-                  <li>System audit log access strictly denied (403).</li>
-                </>
-              )}
-              {isAdmin && (
-                <>
-                  <li><strong>System audit log access authorized:</strong> Cryptographic SHA-256 chain inspection unlocked.</li>
-                  <li>User account administration and workforce role provisioning authorized.</li>
-                  <li>Direct clinical notes masked to uphold patient confidentiality boundaries.</li>
-                  <li>Tamper-evident verification status checked on every audit request.</li>
-                </>
-              )}
-            </ul>
+      {/* Architectural Pipeline Deep Dive */}
+      <section id="architecture" className="tech-box">
+        <div className="tech-box-header">
+          <div>
+            <h2>Zero-trust architectural pipeline</h2>
+            <p style={{ fontSize: '0.86rem', marginTop: '4px' }}>
+              How MedGate mediates every request between client and database layer
+            </p>
+          </div>
+          <span className="status-badge neutral font-mono">
+            3-tier enforcement
+          </span>
+        </div>
+
+        <div className="pipeline-grid">
+          <div className="pipeline-card">
+            <span className="pipeline-step">01 &bull; Ingestion & Identity</span>
+            <h4>Zero-Trust Gateway Interceptor</h4>
+            <p>
+              Inspects cryptographic session tokens and header role assertions on every incoming HTTP call.
+              Applies default-deny validation before routing to domain handlers.
+            </p>
+          </div>
+
+          <div className="pipeline-card">
+            <span className="pipeline-step">02 &bull; Decision Engine</span>
+            <h4>Dynamic Field Redaction</h4>
+            <p>
+              In-memory Least Privilege filtering evaluates role against the field permission matrix in 0.0343ms.
+              Strips unauthorized keys before responses leave gateway memory.
+            </p>
+          </div>
+
+          <div className="pipeline-card">
+            <span className="pipeline-step">03 &bull; Cryptographic Non-Repudiation</span>
+            <h4>SHA-256 Chained Audit Trail</h4>
+            <p>
+              Synchronously hashes every granted and denied access event into the append-only ledger.
+              Guarantees retroactive tamper detection across all historical entries.
+            </p>
           </div>
         </div>
       </section>
@@ -471,13 +509,13 @@ export default function LandingPage() {
       </section>
 
       {/* Bottom CTA Banner */}
-      <section style={{ textAlign: 'center', padding: '40px 20px', border: '1px solid var(--border-subtle)', backgroundColor: 'var(--bg-surface)' }}>
+      <section style={{ textAlign: 'left', padding: '40px 28px', border: '1px solid var(--border-subtle)', backgroundColor: 'var(--bg-surface)' }}>
         <h2 style={{ fontSize: '1.6rem', marginBottom: '12px' }}>Experience Zero-Trust Medical Access Control</h2>
-        <p style={{ maxWidth: '640px', margin: '0 auto 24px', fontSize: '0.96rem' }}>
+        <p style={{ maxWidth: '680px', marginBottom: '24px', fontSize: '0.96rem' }}>
           Explore the live patient directory, observe dynamic field redaction across roles,
           and verify the cryptographic audit trail directly.
         </p>
-        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
           <button
             type="button"
             onClick={handleTryDemo}
