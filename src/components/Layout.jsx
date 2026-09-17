@@ -62,6 +62,16 @@ export default function Layout() {
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <a
+                href="https://github.com/TeamShieldX/MedGate-Frontend"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="theme-toggle-btn"
+                title="View TeamShieldX MedGate on GitHub"
+              >
+                GitHub
+              </a>
+
               {/* When logged in: show Welcome [user], RoleSwitcher, and Log out */}
               {isLoggedIn ? (
                 <>
@@ -169,10 +179,19 @@ export default function Layout() {
             <span style={{ color: 'var(--status-granted)' }}>SHA-256 chained</span>
           </div>
 
-          <div style={{ marginTop: '8px', fontSize: '0.74rem', display: 'flex', gap: '8px' }}>
+          <div style={{ marginTop: '8px', fontSize: '0.74rem', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             <Link to="/terms" style={{ color: 'var(--text-secondary)' }}>Terms</Link>
             <span style={{ color: 'var(--border-strong)' }}>•</span>
             <Link to="/privacy" style={{ color: 'var(--text-secondary)' }}>Privacy</Link>
+            <span style={{ color: 'var(--border-strong)' }}>•</span>
+            <a
+              href="https://github.com/TeamShieldX/MedGate-Frontend"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              GitHub
+            </a>
           </div>
         </div>
       </aside>
@@ -185,6 +204,16 @@ export default function Layout() {
           </div>
 
           <div className="top-bar-right">
+            <a
+              href="https://github.com/TeamShieldX/MedGate-Frontend"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="theme-toggle-btn"
+              title="View on GitHub"
+            >
+              GitHub
+            </a>
+
             {/* When logged in: show Welcome [user], RoleSwitcher, and Log out */}
             {isLoggedIn ? (
               <>
