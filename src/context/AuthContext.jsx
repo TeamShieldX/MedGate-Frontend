@@ -4,9 +4,18 @@ const AuthContext = createContext(null);
 
 export const ROLES = ['Doctor', 'Nurse', 'Receptionist', 'Researcher', 'Administrator'];
 
+function getSystemTheme() {
+  if (typeof window !== 'undefined' && window.matchMedia) {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  return 'dark';
+}
+
 export function AuthProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('medgate_theme') || 'dark';
+    const saved = localStorage.getItem('medgate_theme');
+    if (saved === 'dark' || saved === 'light') return saved;
+    return getSystemTheme();
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -30,11 +39,28 @@ export function AuthProvider({ children }) {
   // Apply theme to html root
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('medgate_theme', theme);
   }, [theme]);
 
+  // Listen to system theme changes if user hasn't explicitly selected one
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleSystemChange = (e) => {
+      const explicit = localStorage.getItem('medgate_theme');
+      if (!explicit) {
+        setTheme(e.matches ? 'dark' : 'light');
+      }
+    };
+
+    if (mediaQuery?.addEventListener) {
+      mediaQuery.addEventListener('change', handleSystemChange);
+      return () => mediaQuery.removeEventListener('change', handleSystemChange);
+    }
+  }, []);
+
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    localStorage.setItem('medgate_theme', nextTheme);
   };
 
   const setRole = (role) => {
@@ -43,7 +69,7 @@ export function AuthProvider({ children }) {
     setUser((prev) => ({
       ...prev,
       id: `usr-${role.toLowerCase()}-101`,
-      username: `${role.toLowerCase()}_user`,
+      username: prev?.username || `${role.toLowerCase()}_user`,
       role,
     }));
   };
@@ -62,7 +88,7 @@ export function AuthProvider({ children }) {
   };
 
   const startDemoSession = () => {
-    loginUser('Doctor', 'dr_smith');
+    loginUser('Doctor', 'dr_moyin');
   };
 
   const logout = () => {
