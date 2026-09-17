@@ -885,10 +885,10 @@ select:focus-visible {
   max-width: 480px;
   width: 100%;
   padding: 14px 28px;
-  background-color: #0F1417;
+  background-color: var(--code-bg);
   border: 1px solid var(--border-subtle);
   border-radius: 4px;
-  transition: opacity 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+  transition: opacity 0.15s ease, transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .participant-banner-link:hover {
@@ -908,17 +908,55 @@ select:focus-visible {
 .hackathon-hero-badge {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 4px 12px 4px 8px;
-  background-color: #0F1417;
+  gap: 8px;
+  padding: 5px 12px;
+  background-color: var(--code-bg);
   border: 1px solid var(--border-subtle);
   border-radius: 4px;
   text-decoration: none;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-primary);
 }
 
 .hackathon-hero-badge:hover {
   border-color: var(--status-granted);
+}
+
+.hackathon-badge-prefix {
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+}
+
+.hackathon-hero-img {
+  height: 20px;
+  width: auto;
+  display: block;
+}
+
+.hackathon-badge-suffix {
+  color: var(--status-granted);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* Light theme harmony: eliminate harsh black background and adapt ICSC white artwork */
+[data-theme="light"] .hackathon-hero-badge {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+}
+
+[data-theme="light"] .participant-banner-link {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+}
+
+[data-theme="light"] .hackathon-hero-img,
+[data-theme="light"] .participant-banner-img {
+  filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(1.2);
 }
 
 .footer-bottom {
