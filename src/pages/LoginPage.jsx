@@ -43,7 +43,23 @@ export default function LoginPage() {
       <div className="tech-box">
         <div className="tech-box-header">
           <h1>Authenticate session</h1>
-          <span className="status-badge neutral">zero-trust</span>
+          <a
+            href="https://nitda.gov.ng"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hackathon-hero-badge"
+            style={{ padding: '3px 8px' }}
+            title="NITDA International Cybersecurity Hackathon"
+          >
+            <img
+              src="/icschack.png"
+              alt="NITDA International Cybersecurity Hackathon"
+              style={{ height: '16px', width: 'auto', display: 'block' }}
+            />
+            <span style={{ fontSize: '0.72rem', color: '#EDEFEE', fontFamily: 'var(--font-mono)' }}>
+              ICSC Hack
+            </span>
+          </a>
         </div>
 
         <p style={{ marginBottom: '20px' }}>
