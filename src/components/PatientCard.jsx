@@ -24,7 +24,7 @@ export default function PatientCard({ patient, role }) {
             ) : (
               <RedactedField
                 fieldName="Patient Identity"
-                reason={isResearcher ? "Redacted for Researcher" : `Hidden for ${role}`}
+                reason={isResearcher ? "Hidden — Researcher role" : `Hidden — ${role} role`}
               />
             )}
           </h3>
@@ -45,7 +45,7 @@ export default function PatientCard({ patient, role }) {
           ) : (
             <RedactedField
               fieldName="Contact PII"
-              reason={isResearcher ? "Redacted for Researcher" : `Hidden for ${role}`}
+              reason={isResearcher ? "Hidden — Researcher role" : `Hidden — ${role} role`}
             />
           )}
         </div>
@@ -57,7 +57,7 @@ export default function PatientCard({ patient, role }) {
           ) : (
             <RedactedField
               fieldName="Clinical Diagnosis"
-              reason={isReceptionist ? "Hidden — Receptionist role" : `Redacted for ${role}`}
+              reason={isReceptionist ? "Hidden — Receptionist role" : `Hidden — ${role} role`}
             />
           )}
         </div>
