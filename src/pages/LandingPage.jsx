@@ -150,7 +150,7 @@ export default function LandingPage() {
             Login
           </Link>
           <a
-            href="https://github.com/TeamShieldX/MedGate-Frontend"
+            href="https://github.com/TeamShieldX/"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-secondary"
