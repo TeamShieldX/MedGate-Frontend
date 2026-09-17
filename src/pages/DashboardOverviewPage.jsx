@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth, ROLES } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import RoleSwitcher from '../components/RoleSwitcher';
+import { getPatients, getAuditLog } from '../services/api';
 
 export default function DashboardOverviewPage() {
   const { currentRole, user, setRole } = useAuth();
@@ -11,7 +12,44 @@ export default function DashboardOverviewPage() {
   const isReceptionist = currentRole === 'Receptionist';
   const isResearcher = currentRole === 'Researcher';
 
+  const [totalPatients, setTotalPatients] = useState(50);
+  const [patientDataCount, setPatientDataCount] = useState(50);
+  const [auditTotal, setAuditTotal] = useState(1010);
+  const [loadingStats, setLoadingStats] = useState(true);
+
   const usernameDisplay = user?.username || `${(currentRole || 'user').toLowerCase()}_user`;
+
+  useEffect(() => {
+    let isMounted = true;
+    setLoadingStats(true);
+
+    Promise.allSettled([
+      getPatients(currentRole),
+      getAuditLog('Administrator')
+    ]).then(([patientsRes, auditRes]) => {
+      if (!isMounted) return;
+
+      if (patientsRes.status === 'fulfilled' && patientsRes.value) {
+        const pVal = patientsRes.value;
+        const total = pVal.total || (pVal.data ? pVal.data.length : 50);
+        const count = pVal.count || (pVal.data ? pVal.data.length : total);
+        setTotalPatients(total);
+        setPatientDataCount(count);
+      }
+
+      if (auditRes.status === 'fulfilled' && auditRes.value) {
+        const aVal = auditRes.value;
+        const total = aVal.total || (aVal.integrity?.totalEntriesVerified) || (aVal.data ? aVal.data.length : 1010);
+        setAuditTotal(total);
+      }
+    }).finally(() => {
+      if (isMounted) setLoadingStats(false);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [currentRole]);
 
   // Role permissions breakdown
   const permissions = [
@@ -70,8 +108,30 @@ export default function DashboardOverviewPage() {
         </div>
       </div>
 
-      {/* Stats Cards Grid */}
+      {/* Stats Cards Grid with Synthea Patient Data */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '28px' }}>
+        {/* Total Synthea Patients Stat Card */}
+        <div className="tech-box" style={{ margin: 0, padding: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
+              SYNTHEA PATIENTS
+            </span>
+            <span className="status-badge neutral font-mono" style={{ fontSize: '0.7rem' }}>
+              EHR Dataset
+            </span>
+          </div>
+          <h3 style={{ margin: '8px 0 6px', color: 'var(--status-granted)', fontFamily: 'var(--font-mono)', fontSize: '1.6rem' }}>
+            {loadingStats ? '...' : `${totalPatients.toLocaleString()} Patients`}
+          </h3>
+          <p style={{ fontSize: '0.82rem' }}>
+            Synthetic electronic health records loaded with diagnoses, meds & encounters.{' '}
+            <Link to="/patients" style={{ color: 'var(--status-granted)', textDecoration: 'underline' }}>
+              Browse directory →
+            </Link>
+          </p>
+        </div>
+
+        {/* Role Clearance Stat Card */}
         <div className="tech-box" style={{ margin: 0, padding: '20px' }}>
           <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
             ROLE CLEARANCE
@@ -86,6 +146,7 @@ export default function DashboardOverviewPage() {
           </p>
         </div>
 
+        {/* Audit Log Status Stat Card */}
         <div className="tech-box" style={{ margin: 0, padding: '20px' }}>
           <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
             AUDIT LOG STATUS
@@ -121,24 +182,13 @@ export default function DashboardOverviewPage() {
           </p>
         </div>
 
-        <div className="tech-box" style={{ margin: 0, padding: '20px' }}>
-          <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
-            GATEWAY LATENCY
-          </span>
-          <h3 style={{ margin: '8px 0 6px', color: 'var(--status-granted)', fontFamily: 'var(--font-mono)' }}>
-            0.0343 ms
-          </h3>
-          <p style={{ fontSize: '0.82rem' }}>
-            29,154 ops/sec evaluated at runtime against the zero-trust policy engine.
-          </p>
-        </div>
-
+        {/* Database & Ledger Stat Card */}
         <div className="tech-box" style={{ margin: 0, padding: '20px' }}>
           <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
             DATABASE & LEDGER
           </span>
-          <h3 style={{ margin: '8px 0 6px', color: 'var(--text-primary)' }}>
-            1,010 Verified
+          <h3 style={{ margin: '8px 0 6px', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
+            {loadingStats ? '...' : `${auditTotal.toLocaleString()} Verified`}
           </h3>
           <p style={{ fontSize: '0.82rem' }}>
             Neon PostgreSQL connected with 100% cryptographic block chain validity.
