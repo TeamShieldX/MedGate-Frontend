@@ -93,11 +93,11 @@ export default function AuditLogPage() {
           {/* Prominent Cryptographic Chain Integrity Indicator */}
           <div className={`integrity-banner ${integrity?.tamperEvidentChainValid ? '' : 'invalid'}`}>
             <div className="integrity-info">
-              <h4>Cryptographic chain status</h4>
+              <h4>Audit Log Integrity</h4>
               <p>
-                Every log row computes SHA-256 over its payload plus previous hash.
+                Every access attempt is permanently linked to the entry before it.
                 {integrity?.totalEntriesVerified && (
-                  <span> Verified across {integrity.totalEntriesVerified.toLocaleString()} entries.</span>
+                  <span> Verified across {integrity.totalEntriesVerified.toLocaleString()} entries — no record has been secretly changed or deleted.</span>
                 )}
               </p>
             </div>
@@ -105,11 +105,11 @@ export default function AuditLogPage() {
             <div>
               {integrity?.tamperEvidentChainValid ? (
                 <span className="status-badge granted" style={{ fontSize: '0.88rem', padding: '6px 12px' }}>
-                  Chain verified (100% valid)
+                  Chain verified — no record has been secretly changed
                 </span>
               ) : (
                 <span className="status-badge denied" style={{ fontSize: '0.88rem', padding: '6px 12px' }}>
-                  Integrity violation detected
+                  Integrity violation detected — record alteration found
                 </span>
               )}
             </div>
