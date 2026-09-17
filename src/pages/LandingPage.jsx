@@ -78,7 +78,7 @@ export default function LandingPage() {
     <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
       {/* Hero Section (Left-aligned typography inside centered page container) */}
       <section id="overview" className="hero-section">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '20px' }}>
+        <div className="hero-badges-wrapper">
           <div className="hero-tag" style={{ margin: 0 }}>
             <span>●</span>
             <span>ZERO-TRUST GATEWAY &bull; 100% AUDIT INTEGRITY</span>
