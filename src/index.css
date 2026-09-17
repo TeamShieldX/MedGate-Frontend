@@ -187,6 +187,14 @@ select:focus-visible {
   padding-top: 12px;
 }
 
+.hero-badges-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
 .hero-tag {
   display: inline-flex;
   align-items: center;
@@ -1205,6 +1213,19 @@ select:focus-visible {
 
   .public-navbar {
     padding: 10px 14px;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+  }
+
+  .public-mobile-menu {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    padding-top: 14px;
+    margin-top: 10px;
+    border-top: 1px solid var(--border-subtle);
+    gap: 12px;
   }
 
   .top-bar {
@@ -1255,14 +1276,28 @@ select:focus-visible {
     padding: 18px 16px;
   }
 
+  .hero-section {
+    display: flex;
+    flex-direction: column;
+  }
+
   .hero-title {
+    order: 1;
     font-size: 1.75rem;
     line-height: 1.25;
+    margin-bottom: 16px;
+  }
+
+  .hero-lead {
+    order: 2;
+    margin-bottom: 22px;
   }
 
   .hero-actions {
+    order: 3;
     flex-direction: column;
     align-items: stretch;
+    margin-bottom: 24px;
   }
 
   .hero-actions .btn-primary,
@@ -1272,7 +1307,24 @@ select:focus-visible {
     text-align: center;
   }
 
+  .hero-badges-wrapper {
+    order: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .hero-tag {
+    font-size: 0.72rem;
+    padding: 4px 8px;
+    max-width: 100%;
+    word-break: break-word;
+  }
+
   .metric-strip {
+    order: 5;
     grid-template-columns: repeat(2, 1fr);
   }
 
