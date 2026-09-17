@@ -39,7 +39,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ maxWidth: '520px', margin: '0 auto 0 0' }}>
+    <div style={{ maxWidth: '520px', margin: '20px auto' }}>
       <div className="tech-box">
         <div className="tech-box-header">
           <h1>Authenticate session</h1>
