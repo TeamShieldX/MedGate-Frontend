@@ -75,7 +75,7 @@ export default function LandingPage() {
   return (
     <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
       {/* Hero Section (Left-aligned typography inside centered page container) */}
-      <section className="hero-section">
+      <section id="overview" className="hero-section">
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '20px' }}>
           <div className="hero-tag" style={{ margin: 0 }}>
             <span>●</span>
@@ -338,7 +338,7 @@ export default function LandingPage() {
       </section>
 
       {/* The Blanket Access Problem vs Zero-Trust Approach */}
-      <section id="overview" className="tech-box">
+      <section id="problem" className="tech-box">
         <h2 style={{ marginBottom: '14px' }}>The security flaw of conventional EHR systems</h2>
         <p style={{ marginBottom: '16px' }}>
           Conventional Electronic Health Record (EHR) platforms grant broad, monolithic access once a user session
@@ -537,7 +537,7 @@ export default function LandingPage() {
       </section>
 
       {/* Synthea Synthetic Healthcare Data & Open Source Architecture */}
-      <section className="tech-box">
+      <section id="synthea" className="tech-box">
         <div className="tech-box-header">
           <div>
             <h2>Synthea™ synthetic health records & open architecture</h2>
