@@ -87,16 +87,15 @@ export default function LandingPage() {
             target="_blank"
             rel="noopener noreferrer"
             className="hackathon-hero-badge"
-            title="NITDA International Cybersecurity Hackathon (ICSC)"
+            title="Built for the NITDA International Cybersecurity Hackathon (ICSC)"
           >
+            <span className="hackathon-badge-prefix">Built for the</span>
             <img
               src="/icschack.png"
-              alt="NITDA International Cybersecurity Hackathon"
-              style={{ height: '22px', width: 'auto', display: 'block' }}
+              alt="ICSC"
+              className="hackathon-hero-img"
             />
-            <span style={{ fontSize: '0.78rem', color: '#EDEFEE', fontFamily: 'var(--font-mono)' }}>
-              NITDA Hackathon Participant
-            </span>
+            <span className="hackathon-badge-suffix">Hackathon</span>
           </a>
         </div>
 
