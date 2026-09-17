@@ -1059,7 +1059,15 @@ select:focus-visible {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: auto;
+}
+
+.desktop-nav-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  gap: 20px;
 }
 
 .mobile-header-actions {
@@ -1087,6 +1095,10 @@ select:focus-visible {
 @media (max-width: 860px) {
   .hamburger-btn {
     display: inline-flex;
+  }
+
+  .public-navbar-brand-row {
+    width: 100%;
   }
 
   .mobile-header-actions {
