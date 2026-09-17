@@ -110,14 +110,10 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             className="participant-banner-link"
-            title="National Information Technology Development Agency (NITDA)"
+            title="National Information Technology Development Agency (NITDA) • International Cybersecurity Hackathon"
           >
             <img
-              src="/nitda-hackathon-banner.png"
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = "/nitda-hackathon-banner.svg";
-              }}
+              src="/icschack.png"
               alt="NITDA International Cybersecurity Hackathon"
               className="participant-banner-img"
             />
