@@ -22,7 +22,7 @@ export default function TermsPage() {
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <div>
+          <div id="least-privilege">
             <h3>1. Zero-Trust Access Authorization</h3>
             <p>
               Access to electronic protected health information (ePHI) mediated by MedGate requires
@@ -32,7 +32,7 @@ export default function TermsPage() {
             </p>
           </div>
 
-          <div>
+          <div id="accountability">
             <h3>2. Role Accountability and Workforce Duties</h3>
             <p>
               Users must authenticate solely under their certified healthcare workforce role (Doctor, Nurse,
@@ -42,7 +42,7 @@ export default function TermsPage() {
             </p>
           </div>
 
-          <div>
+          <div id="non-repudiation">
             <h3>3. Tamper-Evident Cryptographic Ledger</h3>
             <p>
               All interactions—both granted requests and access denials—are immutably committed to an append-only
@@ -51,7 +51,7 @@ export default function TermsPage() {
             </p>
           </div>
 
-          <div>
+          <div id="synthetic-data">
             <h3>4. Synthetic and Clinical Data Gating</h3>
             <p>
               MedGate applies real-time transformation pipelines on relational datasets. Researchers and external
@@ -60,7 +60,7 @@ export default function TermsPage() {
             </p>
           </div>
 
-          <div>
+          <div id="benchmarks">
             <h3>5. System Availability and Benchmarks</h3>
             <p>
               MedGate is engineered for sub-millisecond access evaluation (0.0343ms average latency). Scheduled
