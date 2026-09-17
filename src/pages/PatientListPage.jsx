@@ -40,7 +40,7 @@ export default function PatientListPage() {
           <div>
             <h1>Patient Directory</h1>
             <p style={{ marginTop: '4px' }}>
-              Records filtered and redacted dynamically based on the active role's least-privilege policy.
+              Every patient file below automatically shows what your active role allows and hides restricted details.
             </p>
           </div>
 
