@@ -1,102 +1,1189 @@
+/* =========================================================
+   MEDGATE - GLOBAL STYLES
+   ========================================================= */
+
 :root {
-  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  --bg-color: #f8fafc;
-  --card-bg: #ffffff;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --border-color: #e2e8f0;
-  --primary-color: #2563eb;
-  --primary-hover: #1d4ed8;
-  --danger-bg: #fef2f2;
-  --danger-border: #fecaca;
-  --danger-text: #991b1b;
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --primary-light: #eff6ff;
+
+  --success: #16a34a;
+  --success-light: #f0fdf4;
+
+  --danger: #dc2626;
+  --danger-light: #fef2f2;
+
+  --warning: #d97706;
+  --warning-light: #fffbeb;
+
+  --background: #f4f7fb;
+  --surface: #ffffff;
+  --surface-soft: #f8fafc;
+
+  --text: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+
+  --border: #e2e8f0;
+  --border-light: #f1f5f9;
+
+  --sidebar-bg: #0f172a;
+  --sidebar-text: #cbd5e1;
+
+  --sidebar-width: 250px;
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  color: var(--text);
+  background: var(--background);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
 }
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
 
 * {
   box-sizing: border-box;
+}
+
+html,
+body,
+#root {
   margin: 0;
-  padding: 0;
+  min-height: 100%;
 }
 
 body {
-  font-family: var(--font-family);
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-  line-height: 1.5;
+  min-width: 320px;
+  background: var(--background);
+  color: var(--text);
 }
 
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 1.5rem;
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }
 
-.card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 1.25rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.header-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #1e293b;
-  color: #fff;
-  padding: 1rem 1.5rem;
-}
-
-.header-nav a {
-  color: #cbd5e1;
-  text-decoration: none;
-  margin-right: 1rem;
-}
-
-.header-nav a.active, .header-nav a:hover {
-  color: #ffffff;
-  font-weight: 600;
-}
-
-.btn {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+button {
   cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+
+/* =========================================================
+   TYPOGRAPHY
+   ========================================================= */
+
+h1,
+h2,
+h3,
+h4 {
+  margin-top: 0;
+  color: var(--text);
+}
+
+h1 {
+  font-size: 1.75rem;
+  letter-spacing: -0.025em;
+}
+
+h2 {
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+}
+
+h3 {
+  font-size: 1.05rem;
+}
+
+p {
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   MAIN APPLICATION LAYOUT
+   ========================================================= */
+
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  background: var(--background);
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.sidebar {
+  width: var(--sidebar-width);
+  min-height: 100vh;
+
+  background: var(--sidebar-bg);
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 24px 16px;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   MEDGATE BRAND
+   ========================================================= */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 0 8px 28px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 10px;
+
+  background: var(--primary);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  flex-shrink: 0;
+}
+
+.brand h2 {
+  margin: 0;
+  color: white;
+
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.brand span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #94a3b8;
+
+  font-size: 0.72rem;
+}
+
+
+/* =========================================================
+   SIDEBAR NAVIGATION
+   ========================================================= */
+
+.sidebar-section {
+  margin-top: 28px;
+}
+
+.sidebar-label {
+  margin: 0 8px 10px;
+
+  color: #64748b;
+
+  font-size: 0.68rem;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 11px 12px;
+
+  border-radius: 9px;
+
+  color: var(--sidebar-text);
+
+  text-decoration: none;
+
   font-size: 0.9rem;
+  font-weight: 500;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
-.btn:hover {
-  background-color: var(--primary-hover);
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: white;
 }
 
-.access-denied-banner {
-  background-color: var(--danger-bg);
-  border: 1px solid var(--danger-border);
-  color: var(--danger-text);
-  padding: 0.75rem 1rem;
-  border-radius: 6px;
-  margin: 1rem 0;
+.sidebar-link.active {
+  background: var(--primary);
+  color: white;
+}
+
+.nav-icon {
+  width: 20px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1rem;
+}
+
+
+/* =========================================================
+   SIDEBAR BOTTOM
+   ========================================================= */
+
+.sidebar-bottom {
+  margin-top: auto;
+}
+
+.sidebar-bottom > .sidebar-link {
+  margin-bottom: 18px;
+}
+
+
+/* =========================================================
+   SECURITY STATUS
+   ========================================================= */
+
+.security-note {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 12px;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 10px;
+}
+
+.security-icon {
+  width: 28px;
+  height: 28px;
+
+  border-radius: 50%;
+
+  background: var(--success);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  flex-shrink: 0;
+}
+
+.security-note strong {
+  display: block;
+
+  color: #e2e8f0;
+
+  font-size: 0.75rem;
+}
+
+.security-note small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #64748b;
+
+  font-size: 0.65rem;
+}
+
+
+/* =========================================================
+   MAIN AREA
+   ========================================================= */
+
+.main-area {
+  flex: 1;
+  min-width: 0;
+}
+
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.topbar {
+  min-height: 82px;
+
+  background: var(--surface);
+
+  border-bottom: 1px solid var(--border);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 16px 32px;
+}
+
+.topbar-label {
+  margin: 0 0 3px;
+
+  color: var(--text-muted);
+
+  font-size: 0.65rem;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+}
+
+.topbar h1 {
+  margin: 0;
+
+  color: var(--text);
+
+  font-size: 1.2rem;
+}
+
+
+/* =========================================================
+   ROLE AREA
+   ========================================================= */
+
+.role-area {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.role-label {
+  color: var(--text-secondary);
+
+  font-size: 0.8rem;
   font-weight: 500;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
+
+/* =========================================================
+   ROLE SELECTOR / SWITCHER
+   ========================================================= */
+
+.role-area select {
+  width: auto;
+  min-width: 150px;
+
+  padding: 8px 12px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 8px;
+
+  background: white;
+
+  color: var(--text);
+
+  font-size: 0.85rem;
+
+  outline: none;
 }
 
-th, td {
-  text-align: left;
-  padding: 0.75rem;
-  border-bottom: 1px solid var(--border-color);
+.role-area select:focus {
+  border-color: var(--primary);
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+/* =========================================================
+   PAGE CONTENT
+   ========================================================= */
+
+.page-content {
+  width: 100%;
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  padding: 32px;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn {
+  border: 0;
+
+  border-radius: 8px;
+
+  padding: 0.7rem 1rem;
+
+  background: var(--primary);
+
+  color: white;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  text-decoration: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--primary-dark);
+
+  box-shadow:
+    0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.card {
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+
+  padding: 1.25rem;
+
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04);
+
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.card:hover {
+  border-color: #cbd5e1;
+
+  box-shadow:
+    0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+
+/* =========================================================
+   PATIENT LIST
+   ========================================================= */
+
+.patient-list {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(300px, 1fr));
+
+  gap: 1rem;
+}
+
+
+/* =========================================================
+   PATIENT CARD
+   ========================================================= */
+
+.patient-list .card {
+  position: relative;
+
+  overflow: hidden;
+}
+
+.patient-list .card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 3px;
+
+  background: var(--primary);
+}
+
+.patient-list .card h3 {
+  margin-bottom: 1rem;
+
+  font-size: 1.1rem;
+}
+
+.patient-list .card p {
+  margin: 0.55rem 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.9rem;
+}
+
+.patient-list .card strong {
+  color: var(--text);
+}
+
+.patient-list .card .btn {
+  margin-top: 0.75rem;
+}
+
+
+/* =========================================================
+   INPUTS / SELECTS
+   ========================================================= */
+
+input,
+select {
+  width: 100%;
+
+  padding: 0.7rem 0.8rem;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: 8px;
+
+  color: var(--text);
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--primary);
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+/* =========================================================
+   ACCESS DENIED
+   ========================================================= */
+
+.access-denied-banner {
+  margin: 1rem 0;
+
+  padding: 1rem;
+
+  background: var(--danger-light);
+
+  border: 1px solid #fecaca;
+
+  border-left: 4px solid var(--danger);
+
+  border-radius: 10px;
+
+  color: #991b1b;
+}
+
+.access-denied-banner strong {
+  display: block;
+
+  margin-bottom: 0.35rem;
+
+  color: var(--danger);
+
+  font-size: 0.9rem;
+
+  letter-spacing: 0.03em;
+}
+
+
+/* =========================================================
+   TABLES / AUDIT LOG
+   ========================================================= */
+
+table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: 12px;
+
+  overflow: hidden;
 }
 
 th {
-  background-color: #f1f5f9;
+  text-align: left;
+
+  padding: 0.8rem 1rem;
+
+  background: var(--surface-soft);
+
+  color: var(--text-secondary);
+
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.04em;
+}
+
+td {
+  padding: 0.9rem 1rem;
+
+  border-top: 1px solid var(--border-light);
+
+  font-size: 0.9rem;
+}
+
+tr:hover td {
+  background: #fafcff;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+   ========================================================= */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 0.25rem 0.6rem;
+
+  border-radius: 999px;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.status-granted {
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.status-denied {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+
+/* =========================================================
+   PAGE HEADERS
+   ========================================================= */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-bottom: 24px;
+}
+
+.page-header h2 {
+  margin-bottom: 4px;
+}
+
+.page-header p {
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   DETAIL PAGE
+   ========================================================= */
+
+.patient-detail {
+  max-width: 900px;
+}
+
+.patient-detail hr {
+  border: 0;
+
+  border-top: 1px solid var(--border);
+
+  margin: 1.5rem 0;
+}
+
+.patient-detail-section {
+  margin-top: 1.5rem;
+}
+
+.patient-detail-section h3 {
+  margin-bottom: 1rem;
+}
+
+
+/* =========================================================
+   LOADING / EMPTY STATES
+   ========================================================= */
+
+.empty-state {
+  padding: 3rem 1rem;
+
+  text-align: center;
+
+  color: var(--text-secondary);
+}
+
+.loading-state {
+  padding: 2rem 0;
+
+  color: var(--text-secondary);
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .topbar {
+    padding: 16px 20px;
+  }
+
+  .page-content {
+    padding: 24px 20px;
+  }
+
+  .patient-list {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .role-label {
+    display: none;
+  }
+
+  table {
+    min-width: 650px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .sidebar {
+    width: 68px;
+
+    padding: 20px 8px;
+  }
+
+  .brand {
+    justify-content: center;
+
+    padding: 0 0 20px;
+  }
+
+  .brand > div:last-child {
+    display: none;
+  }
+
+  .sidebar-label {
+    display: none;
+  }
+
+  .sidebar-link {
+    justify-content: center;
+
+    padding: 12px;
+  }
+
+  .sidebar-link span:last-child {
+    display: none;
+  }
+
+  .security-note {
+    display: none;
+  }
+
+  .topbar {
+    padding: 14px;
+
+    align-items: center;
+  }
+
+  .topbar-label {
+    display: none;
+  }
+
+  .topbar h1 {
+    font-size: 1rem;
+  }
+
+  .page-content {
+    padding: 18px 14px;
+  }
+
+  .role-area select {
+    min-width: 120px;
+
+    font-size: 0.8rem;
+  }
+
+  .page-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+}
+
+/* =========================================================
+   PATIENT DETAIL PAGE
+   ========================================================= */
+
+.patient-detail-card {
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 2px 6px rgba(15, 23, 42, 0.04);
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   PATIENT DETAIL HEADER
+   ========================================================= */
+
+.patient-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 28px 30px;
+
+  border-bottom: 1px solid var(--border);
+
+  background: linear-gradient(
+    to right,
+    #ffffff,
+    #f8fbff
+  );
+}
+
+.detail-eyebrow {
+  margin: 0 0 5px;
+
+  color: var(--primary);
+
+  font-size: 0.68rem;
+  font-weight: 800;
+
+  letter-spacing: 0.1em;
+}
+
+.patient-detail-header h2 {
+  margin: 0;
+
+  font-size: 1.5rem;
+}
+
+.detail-subtitle {
+  margin: 5px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.85rem;
+}
+
+.detail-role-badge {
+  padding: 8px 12px;
+
+  border: 1px solid #bfdbfe;
+
+  border-radius: 999px;
+
+  background: var(--primary-light);
+
+  color: #1d4ed8;
+
+  font-size: 0.78rem;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   DETAIL SECTIONS
+   ========================================================= */
+
+.detail-section {
+  padding: 26px 30px;
+
+  border-bottom: 1px solid var(--border-light);
+}
+
+.detail-section:last-child {
+  border-bottom: 0;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 20px;
+}
+
+.section-heading h3 {
+  margin: 0;
+
+  font-size: 1rem;
+}
+
+.section-heading p {
+  margin: 4px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.78rem;
+}
+
+
+/* =========================================================
+   PROTECTED BADGE
+   ========================================================= */
+
+.section-security-badge {
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  background: #f8fafc;
+
+  border: 1px solid var(--border);
+
+  color: var(--text-secondary);
+
+  font-size: 0.7rem;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   DETAIL GRID
+   ========================================================= */
+
+.detail-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 14px;
+}
+
+
+/* =========================================================
+   DETAIL FIELD
+   ========================================================= */
+
+.detail-field {
+  min-height: 78px;
+
+  padding: 15px 16px;
+
+  background: var(--surface-soft);
+
+  border: 1px solid var(--border-light);
+
+  border-radius: 10px;
+}
+
+.field-label {
+  margin-bottom: 7px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.72rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.04em;
+}
+
+.field-value {
+  color: var(--text);
+
+  font-size: 0.9rem;
+
   font-weight: 600;
+
+  line-height: 1.5;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   DENIED FIELD
+   ========================================================= */
+
+.denied-field {
+  background: #fffafa;
+
+  border-color: #fee2e2;
+}
+
+.denied-field .access-denied-banner {
+  margin: 0;
+
+  padding: 10px;
+
+  border-radius: 7px;
+
+  border-left-width: 3px;
+
+  font-size: 0.76rem;
+}
+
+.denied-field .access-denied-banner strong {
+  margin-bottom: 3px;
+
+  font-size: 0.72rem;
+}
+
+.denied-field .access-denied-banner div {
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   DETAIL PAGE RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .patient-detail-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    padding: 22px 20px;
+  }
+
+  .detail-section {
+    padding: 22px 20px;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-role-badge {
+    white-space: normal;
+  }
 }
