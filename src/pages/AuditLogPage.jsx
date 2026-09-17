@@ -10,6 +10,7 @@ export default function AuditLogPage() {
   const [integrity, setIntegrity] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [autoPoll, setAutoPoll] = useState(true);
   const [accessDenied, setAccessDenied] = useState(false);
   const [denialReason, setDenialReason] = useState(null);
 
@@ -54,6 +55,15 @@ export default function AuditLogPage() {
     fetchLogs(true);
   }, [fetchLogs]);
 
+  // Live polling stream every 4 seconds
+  useEffect(() => {
+    if (!autoPoll || !isAdmin) return;
+    const interval = setInterval(() => {
+      fetchLogs(false);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [autoPoll, isAdmin, fetchLogs]);
+
   return (
     <div>
       <div style={{ marginBottom: '24px' }}>
@@ -66,15 +76,26 @@ export default function AuditLogPage() {
           </div>
 
           {isAdmin && (
-            <button
-              type="button"
-              onClick={() => fetchLogs(false)}
-              disabled={loading || refreshing}
-              className="btn-secondary"
-              style={{ padding: '6px 14px', fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-            >
-              <span>{refreshing ? 'Refreshing...' : '↻ Refresh Log'}</span>
-            </button>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <button
+                type="button"
+                onClick={() => setAutoPoll(prev => !prev)}
+                className={`status-badge ${autoPoll ? 'granted' : 'neutral'}`}
+                style={{ cursor: 'pointer', padding: '6px 12px', fontSize: '0.78rem', background: 'none' }}
+                title="Toggle real-time auto-polling"
+              >
+                {autoPoll ? '● Live Stream (4s)' : '○ Paused'}
+              </button>
+              <button
+                type="button"
+                onClick={() => fetchLogs(false)}
+                disabled={loading || refreshing}
+                className="btn-secondary"
+                style={{ padding: '6px 14px', fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+              >
+                <span>{refreshing ? '...' : '↻ Refresh'}</span>
+              </button>
+            </div>
           )}
         </div>
       </div>
