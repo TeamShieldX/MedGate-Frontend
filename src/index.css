@@ -135,9 +135,14 @@ select:focus-visible {
 }
 
 .public-navbar-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   width: 100%;
   border-bottom: 1px solid var(--border-subtle);
   background-color: var(--bg-surface);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .public-navbar {
@@ -324,12 +329,17 @@ select:focus-visible {
 }
 
 .top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 16px 32px;
   border-bottom: 1px solid var(--border-subtle);
   background-color: var(--bg-surface);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   gap: 16px;
 }
 
