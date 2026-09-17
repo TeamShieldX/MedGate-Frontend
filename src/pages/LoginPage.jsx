@@ -4,9 +4,9 @@ import { useAuth, ROLES } from '../context/AuthContext';
 import { login } from '../services/api';
 
 export default function LoginPage() {
-  const { currentRole, setRole } = useAuth();
+  const { currentRole, loginUser } = useAuth();
   const [selectedRole, setSelectedRole] = useState(currentRole || 'Doctor');
-  const [username, setUsername] = useState(`${selectedRole.toLowerCase()}_user`);
+  const [username, setUsername] = useState(`${(currentRole || 'doctor').toLowerCase()}_user`);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const navigate = useNavigate();
@@ -24,14 +24,14 @@ export default function LoginPage() {
     try {
       const res = await login(selectedRole, username);
       if (res.success || res.data?.token) {
-        setRole(selectedRole);
+        loginUser(selectedRole, username);
         navigate('/patients');
       } else {
         setErrorMessage(res.error || 'Authentication rejected by security gateway');
       }
     } catch {
-      // Local fallback
-      setRole(selectedRole);
+      // Local session fallback
+      loginUser(selectedRole, username);
       navigate('/patients');
     } finally {
       setIsSubmitting(false);
@@ -39,7 +39,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ maxWidth: '520px' }}>
+    <div style={{ maxWidth: '520px', margin: '0 auto 0 0' }}>
       <div className="tech-box">
         <div className="tech-box-header">
           <h1>Authenticate session</h1>
