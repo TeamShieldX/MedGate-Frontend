@@ -79,11 +79,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 1.85rem;
+  font-size: 2.1rem;
 }
 
 h2 {
-  font-size: 1.4rem;
+  font-size: 1.45rem;
 }
 
 h3 {
@@ -136,7 +136,7 @@ select:focus-visible {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
+  padding: 18px 24px;
   max-width: 1140px;
   margin: 0 auto;
   gap: 20px;
@@ -160,11 +160,55 @@ select:focus-visible {
 }
 
 .public-page-container {
-  padding: 44px 24px 64px;
+  padding: 48px 24px 72px;
   max-width: 1140px;
   width: 100%;
   margin: 0 auto;
   flex: 1;
+}
+
+/* Hero Section (Left-aligned within centered container) */
+.hero-section {
+  text-align: left;
+  margin-bottom: 56px;
+  padding-top: 12px;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--status-granted);
+  background-color: rgba(61, 139, 114, 0.08);
+  border: 1px solid var(--status-granted);
+  margin-bottom: 20px;
+}
+
+.hero-title {
+  font-size: 2.35rem;
+  line-height: 1.22;
+  margin-bottom: 20px;
+  letter-spacing: -0.025em;
+  max-width: 900px;
+}
+
+.hero-lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 780px;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-top: 28px;
+  flex-wrap: wrap;
 }
 
 /* Authenticated App Shell with Sidebar */
@@ -412,16 +456,16 @@ select:focus-visible {
 .tech-box {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  padding: 24px;
-  margin-bottom: 24px;
+  padding: 28px;
+  margin-bottom: 28px;
 }
 
 .tech-box-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
   border-bottom: 1px solid var(--border-subtle);
   flex-wrap: wrap;
   gap: 12px;
@@ -434,17 +478,17 @@ select:focus-visible {
   gap: 1px;
   background-color: var(--metric-strip-bg);
   border: 1px solid var(--border-subtle);
-  margin: 28px 0;
+  margin: 32px 0;
 }
 
 .metric-cell {
   background-color: var(--bg-surface);
-  padding: 24px 20px;
+  padding: 24px 22px;
 }
 
 .metric-number {
   font-family: var(--font-mono);
-  font-size: 1.85rem;
+  font-size: 1.9rem;
   font-weight: 700;
   color: var(--text-primary);
   display: block;
@@ -453,7 +497,7 @@ select:focus-visible {
 .metric-label {
   font-size: 0.85rem;
   color: var(--text-secondary);
-  margin-top: 6px;
+  margin-top: 8px;
   display: block;
 }
 
@@ -640,7 +684,7 @@ select:focus-visible {
   display: flex;
   gap: 8px;
   border-bottom: 1px solid var(--border-subtle);
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   overflow-x: auto;
   padding-bottom: 4px;
 }
@@ -651,7 +695,7 @@ select:focus-visible {
   color: var(--text-secondary);
   font-family: var(--font-mono);
   font-size: 0.84rem;
-  padding: 6px 12px;
+  padding: 8px 14px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -667,6 +711,28 @@ select:focus-visible {
   background: var(--code-bg);
 }
 
+/* Terminal Inspection Box */
+.terminal-box {
+  background-color: var(--bg-base);
+  border: 1px solid var(--border-strong);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 16px;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
 /* Hash Chain Visual Blocks */
 .chain-flow {
   display: flex;
@@ -678,7 +744,7 @@ select:focus-visible {
 .chain-block {
   border: 1px solid var(--border-subtle);
   background: var(--code-bg);
-  padding: 14px 18px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -702,6 +768,40 @@ select:focus-visible {
   padding-left: 20px;
 }
 
+/* Architecture Pipeline Cards */
+.pipeline-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.pipeline-card {
+  border: 1px solid var(--border-subtle);
+  background-color: var(--code-bg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pipeline-step {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--status-granted);
+}
+
+.pipeline-card h4 {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.pipeline-card p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
 /* Public Technical Footer */
 .public-footer-wrapper {
   border-top: 1px solid var(--border-subtle);
@@ -713,35 +813,35 @@ select:focus-visible {
 .public-footer {
   max-width: 1140px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 44px 24px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 32px;
 }
 
 .footer-top {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 32px;
+  gap: 36px;
 }
 
 .footer-col h5 {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   color: var(--text-primary);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .footer-col ul {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
 }
 
 .footer-col a {
   color: var(--text-secondary);
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   transition: color 0.15s ease;
 }
 
@@ -754,7 +854,7 @@ select:focus-visible {
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid var(--border-subtle);
-  padding-top: 20px;
+  padding-top: 22px;
   font-size: 0.8rem;
   color: var(--text-secondary);
   flex-wrap: wrap;
@@ -797,11 +897,15 @@ select:focus-visible {
   }
 
   .public-page-container {
-    padding: 24px 16px;
+    padding: 28px 16px 48px;
   }
 
   .page-container {
     padding: 20px 16px;
+  }
+
+  .hero-title {
+    font-size: 1.85rem;
   }
 
   .footer-top {
