@@ -13,7 +13,7 @@ export default function ThemeToggle() {
       title={`Current theme: ${theme}. Click to switch.`}
     >
       <span aria-hidden="true">{theme === 'dark' ? '☀' : '☾'}</span>
-      <span>{theme === 'dark' ? 'light' : 'dark'}</span>
+      <span className="theme-toggle-text">{theme === 'dark' ? 'light' : 'dark'}</span>
     </button>
   );
 }
