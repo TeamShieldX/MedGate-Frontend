@@ -33,10 +33,10 @@ export default function Footer() {
           <div className="footer-col">
             <h5>Compliance</h5>
             <ul>
-              <li><span style={{ color: 'var(--text-secondary)', fontSize: '0.84rem' }}>HIPAA § 164.312</span></li>
-              <li><span style={{ color: 'var(--text-secondary)', fontSize: '0.84rem' }}>Least Privilege Access</span></li>
-              <li><span style={{ color: 'var(--text-secondary)', fontSize: '0.84rem' }}>Non-Repudiation Log</span></li>
-              <li><span style={{ color: 'var(--text-secondary)', fontSize: '0.84rem' }}>Field Redaction Matrix</span></li>
+              <li><Link to="/privacy">HIPAA § 164.312</Link></li>
+              <li><Link to="/terms">Least Privilege Access</Link></li>
+              <li><a href="#integrity">Non-Repudiation Log</a></li>
+              <li><a href="#simulator">Field Redaction Matrix</a></li>
             </ul>
           </div>
 
@@ -48,6 +48,28 @@ export default function Footer() {
               <li><Link to="/login">Authentication Console</Link></li>
             </ul>
           </div>
+        </div>
+
+        {/* NITDA Hackathon Official Participant Banner */}
+        <div className="participant-banner-section">
+          <span className="participant-label">Official Participant</span>
+          <a
+            href="https://nitda.gov.ng"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="participant-banner-link"
+            title="National Information Technology Development Agency (NITDA)"
+          >
+            <img
+              src="/nitda-hackathon-banner.png"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = "/nitda-hackathon-banner.svg";
+              }}
+              alt="NITDA International Cybersecurity Hackathon"
+              className="participant-banner-img"
+            />
+          </a>
         </div>
 
         <div className="footer-bottom">
