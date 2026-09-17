@@ -381,6 +381,14 @@ select:focus-visible {
   color: var(--text-primary);
 }
 
+.title-mobile {
+  display: none;
+}
+
+.title-desktop {
+  display: inline;
+}
+
 .top-bar-right {
   display: flex;
   align-items: center;
@@ -1135,91 +1143,68 @@ select:focus-visible {
     display: none !important;
   }
 
-  .sidebar.mobile-closed {
+  .sidebar {
     display: none !important;
-  }
-
-  .sidebar.mobile-open {
-    display: flex !important;
   }
 
   .app-shell {
     flex-direction: column;
   }
 
-  .sidebar {
+  .title-mobile {
+    display: inline !important;
+    font-weight: 700;
+  }
+
+  .title-desktop {
+    display: none !important;
+  }
+
+  .theme-toggle-text {
+    display: none !important;
+  }
+
+  .theme-toggle-btn {
+    padding: 5px 8px;
+    min-width: auto;
+    font-size: 0.8rem;
+  }
+
+  .role-switcher-container {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .role-switcher-label {
+    display: none !important;
+  }
+
+  .role-select {
+    padding: 4px 6px;
+    font-size: 0.76rem;
+    max-width: 105px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .public-navbar-brand-row {
     width: 100%;
-    min-height: auto;
-    height: auto;
-    position: static;
-    overflow-y: visible;
-    border-right: none;
-    border-bottom: 1px solid var(--border-subtle);
-    padding: 14px 18px;
-  }
-
-  .sidebar .brand-header {
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-  }
-
-  .sidebar-footer {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border-subtle);
+    align-items: center;
+    gap: 8px;
   }
 
-  .sidebar-footer .security-indicator {
+  .mobile-header-actions {
     display: flex;
     align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 0;
-  }
-
-  .sidebar-logout-btn {
-    width: auto;
-    margin-top: 0;
-    padding: 5px 12px;
-  }
-
-  .nav-group {
-    flex-direction: row;
-    flex-wrap: wrap;
     gap: 6px;
-  }
-
-  .nav-link {
-    padding: 6px 12px;
-    font-size: 0.82rem;
+    flex-shrink: 0;
   }
 
   .public-navbar {
-    padding: 12px 18px;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
-
-  .public-navbar > div:first-child {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-
-  .public-navbar > div:last-child {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 10px;
+    padding: 10px 14px;
   }
 
   .top-bar {
@@ -1245,7 +1230,7 @@ select:focus-visible {
   }
 
   .top-bar-left .system-title {
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1254,33 +1239,12 @@ select:focus-visible {
   .top-bar-right {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     flex-shrink: 0;
   }
 
   .desktop-only-item {
     display: none !important;
-  }
-
-  .role-switcher-container {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .role-switcher-label {
-    font-size: 0.78rem;
-    color: var(--text-secondary);
-    font-family: var(--font-mono);
-  }
-
-  .role-select {
-    padding: 4px 8px;
-    font-size: 0.8rem;
-    font-family: var(--font-mono);
-    border: 1px solid var(--border-subtle);
-    background-color: var(--bg-surface);
-    color: var(--text-primary);
   }
 
   .public-page-container {
