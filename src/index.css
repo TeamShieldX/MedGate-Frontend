@@ -233,13 +233,18 @@ select:focus-visible {
 
 .sidebar {
   width: 260px;
-  min-height: 100vh;
+  height: 100vh;
+  position: sticky;
+  top: 0;
   background-color: var(--bg-surface);
   border-right: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
-  padding: 24px;
+  padding: 20px;
   flex-shrink: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  z-index: 90;
 }
 
 .brand-header {
@@ -1124,6 +1129,9 @@ select:focus-visible {
   .sidebar {
     width: 100%;
     min-height: auto;
+    height: auto;
+    position: static;
+    overflow-y: visible;
     border-right: none;
     border-bottom: 1px solid var(--border-subtle);
     padding: 14px 18px;
