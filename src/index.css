@@ -871,23 +871,46 @@ select:focus-visible {
 }
 
 .participant-banner-link {
-  display: inline-block;
-  max-width: 620px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 480px;
   width: 100%;
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  padding: 14px 28px;
+  background-color: #0F1417;
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  transition: opacity 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
 }
 
 .participant-banner-link:hover {
   opacity: 0.95;
+  border-color: var(--status-granted);
   transform: translateY(-1px);
 }
 
 .participant-banner-img {
   width: 100%;
   height: auto;
-  max-height: 90px;
+  max-height: 80px;
   object-fit: contain;
   display: block;
+}
+
+.hackathon-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 12px 4px 8px;
+  background-color: #0F1417;
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+
+.hackathon-hero-badge:hover {
+  border-color: var(--status-granted);
 }
 
 .footer-bottom {
