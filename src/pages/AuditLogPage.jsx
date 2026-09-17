@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import AuditLogTable from '../components/AuditLogTable';
 import AccessDeniedBanner from '../components/AccessDeniedBanner';
@@ -9,15 +9,13 @@ export default function AuditLogPage() {
   const [logs, setLogs] = useState([]);
   const [integrity, setIntegrity] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [accessDenied, setAccessDenied] = useState(false);
   const [denialReason, setDenialReason] = useState(null);
 
   const isAdmin = currentRole === 'Administrator';
 
-  useEffect(() => {
-    let isMounted = true;
-    setLoading(true);
-
+  const fetchLogs = useCallback(async (isInitial = false) => {
     if (!isAdmin) {
       setAccessDenied(true);
       setDenialReason(`Role '${currentRole}' lacks permission to read resource 'audit-logs'. Only 'Administrator' is authorized.`);
@@ -25,41 +23,60 @@ export default function AuditLogPage() {
       return;
     }
 
-    setAccessDenied(false);
+    if (isInitial) setLoading(true);
+    else setRefreshing(true);
 
-    getAuditLog(currentRole)
-      .then((res) => {
-        if (!isMounted) return;
-        if (res.status === 403 || res.success === false) {
-          setAccessDenied(true);
-          setDenialReason(res.error || `Access denied for role ${currentRole}`);
-        } else {
-          setLogs(res.data || []);
-          setIntegrity(res.integrity || {
-            tamperEvidentChainValid: true,
-            totalEntriesVerified: res.total || 1010
-          });
-        }
-      })
-      .catch((err) => {
-        console.error('Failed to load audit logs:', err);
-      })
-      .finally(() => {
-        if (isMounted) setLoading(false);
-      });
-
-    return () => {
-      isMounted = false;
-    };
+    try {
+      const res = await getAuditLog(currentRole);
+      if (res.status === 403 || res.success === false) {
+        setAccessDenied(true);
+        setDenialReason(res.error || `Access denied for role ${currentRole}`);
+      } else {
+        setAccessDenied(false);
+        const sorted = (res.data || []).sort(
+          (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        );
+        setLogs(sorted);
+        setIntegrity(res.integrity || {
+          tamperEvidentChainValid: true,
+          totalEntriesVerified: res.total || sorted.length
+        });
+      }
+    } catch (err) {
+      console.error('Failed to load audit logs:', err);
+    } finally {
+      if (isInitial) setLoading(false);
+      setRefreshing(false);
+    }
   }, [currentRole, isAdmin]);
+
+  useEffect(() => {
+    fetchLogs(true);
+  }, [fetchLogs]);
 
   return (
     <div>
       <div style={{ marginBottom: '24px' }}>
-        <h1>Cryptographic Audit Trail</h1>
-        <p style={{ marginTop: '4px' }}>
-          Immutable SHA-256 hash-chained log of all authorization decisions (granted and denied).
-        </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: '12px' }}>
+          <div>
+            <h1>Cryptographic Audit Trail</h1>
+            <p style={{ marginTop: '4px' }}>
+              Immutable SHA-256 hash-chained log of all authorization decisions (granted and denied).
+            </p>
+          </div>
+
+          {isAdmin && (
+            <button
+              type="button"
+              onClick={() => fetchLogs(false)}
+              disabled={loading || refreshing}
+              className="btn-secondary"
+              style={{ padding: '6px 14px', fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+            >
+              <span>{refreshing ? 'Refreshing...' : '↻ Refresh Log'}</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {accessDenied ? (
@@ -101,9 +118,11 @@ export default function AuditLogPage() {
           <div className="tech-box">
             <div className="tech-box-header">
               <h3>Recorded Access Decisions</h3>
-              <span className="status-badge neutral font-mono">
-                Showing {logs.length} entries
-              </span>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <span className="status-badge neutral font-mono">
+                  Showing {logs.length} entries (latest first)
+                </span>
+              </div>
             </div>
 
             <AuditLogTable logs={logs} />
