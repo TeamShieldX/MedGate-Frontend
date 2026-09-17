@@ -27,38 +27,29 @@ export default function Layout() {
         <div className="public-navbar-wrapper">
           <header className="public-navbar">
             <div style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
-              <Link to="/" style={{ textDecoration: 'none' }}>
+              <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <img src="/logo.jpg" alt="MedGate Logo" className="brand-logo-img" />
                 <span className="brand-title">MEDGATE</span>
               </Link>
 
-              <nav className="public-nav-links" aria-label="Public navigation">
-                <NavLink
-                  to="/"
-                  end
-                  className={({ isActive }) => `public-nav-link ${isActive ? 'active' : ''}`}
-                >
-                  Overview
-                </NavLink>
+              {/* Show Patients and Audit Log ONLY if user is logged in */}
+              {isLoggedIn && (
+                <nav className="public-nav-links" aria-label="Public navigation">
+                  <NavLink
+                    to="/patients"
+                    className={({ isActive }) => `public-nav-link ${isActive ? 'active' : ''}`}
+                  >
+                    Patients
+                  </NavLink>
 
-                {/* Show Patients and Audit Log ONLY if user is logged in */}
-                {isLoggedIn && (
-                  <>
-                    <NavLink
-                      to="/patients"
-                      className={({ isActive }) => `public-nav-link ${isActive ? 'active' : ''}`}
-                    >
-                      Patients
-                    </NavLink>
-
-                    <NavLink
-                      to="/audit-log"
-                      className={({ isActive }) => `public-nav-link ${isActive ? 'active' : ''}`}
-                    >
-                      Audit Log
-                    </NavLink>
-                  </>
-                )}
-              </nav>
+                  <NavLink
+                    to="/audit-log"
+                    className={({ isActive }) => `public-nav-link ${isActive ? 'active' : ''}`}
+                  >
+                    Audit Log
+                  </NavLink>
+                </nav>
+              )}
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -122,10 +113,13 @@ export default function Layout() {
       {/* Sidebar Navigation */}
       <aside className="sidebar">
         <div className="brand-header">
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <div className="brand-title">MEDGATE</div>
+          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <img src="/logo.jpg" alt="MedGate Logo" className="brand-logo-img" />
+            <div>
+              <div className="brand-title">MEDGATE</div>
+              <div className="brand-subtitle">Zero-Trust EHR Gateway</div>
+            </div>
           </Link>
-          <div className="brand-subtitle">Zero-Trust EHR Gateway</div>
         </div>
 
         <nav className="nav-group" aria-label="System navigation">
