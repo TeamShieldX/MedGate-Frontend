@@ -1,5 +1,68 @@
-import React from 'react';
+import React, { useState } from 'react';
 import RedactedField from './RedactedField';
+
+function ExpandableSectionTable({
+  items = [],
+  limit = 5,
+  renderHeader,
+  renderRow,
+  emptyMessage,
+  label = 'records'
+}) {
+  const [expanded, setExpanded] = useState(false);
+
+  if (!items || items.length === 0) {
+    return <p>{emptyMessage}</p>;
+  }
+
+  const visibleItems = expanded ? items : items.slice(0, limit);
+  const remainingCount = items.length - limit;
+
+  return (
+    <div>
+      <div className="table-wrapper">
+        <table className="tech-table">
+          <thead>
+            {renderHeader()}
+          </thead>
+          <tbody>
+            {visibleItems.map((item, index) => renderRow(item, index))}
+          </tbody>
+        </table>
+      </div>
+
+      {items.length > limit && (
+        <div style={{ marginTop: '12px', display: 'flex', justifyContent: 'flex-start' }}>
+          <button
+            type="button"
+            onClick={() => setExpanded(!expanded)}
+            className="btn-secondary"
+            style={{
+              fontSize: '0.8rem',
+              padding: '6px 14px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              cursor: 'pointer'
+            }}
+          >
+            {expanded ? (
+              <>
+                <span>Show less</span>
+                <span style={{ fontSize: '0.72rem' }}>▲</span>
+              </>
+            ) : (
+              <>
+                <span>See more ({remainingCount} more {label})</span>
+                <span style={{ fontSize: '0.72rem' }}>▼</span>
+              </>
+            )}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function PatientDetailView({ patient, role }) {
   if (!patient) {
@@ -145,34 +208,30 @@ export default function PatientDetailView({ patient, role }) {
               </span>
             </div>
 
-            {patient.diagnoses && patient.diagnoses.length > 0 ? (
-              <div className="table-wrapper">
-                <table className="tech-table">
-                  <thead>
-                    <tr>
-                      <th>Code</th>
-                      <th>Description</th>
-                      <th>Onset Date</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {patient.diagnoses.map((d, i) => (
-                      <tr key={d.id || i}>
-                        <td className="font-mono">{d.code}</td>
-                        <td>{d.description}</td>
-                        <td className="font-mono">{d.onsetDate || '—'}</td>
-                        <td>
-                          <span className="status-badge granted">{d.status || 'active'}</span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <p>No secondary diagnoses recorded.</p>
-            )}
+            <ExpandableSectionTable
+              items={patient.diagnoses}
+              limit={5}
+              label="diagnoses"
+              emptyMessage="No secondary diagnoses recorded."
+              renderHeader={() => (
+                <tr>
+                  <th>Code</th>
+                  <th>Description</th>
+                  <th>Onset Date</th>
+                  <th>Status</th>
+                </tr>
+              )}
+              renderRow={(d, i) => (
+                <tr key={d.id || i}>
+                  <td className="font-mono">{d.code}</td>
+                  <td>{d.description}</td>
+                  <td className="font-mono">{d.onsetDate || '—'}</td>
+                  <td>
+                    <span className="status-badge granted">{d.status || 'active'}</span>
+                  </td>
+                </tr>
+              )}
+            />
           </div>
         ) : (
           <RedactedField
@@ -190,36 +249,32 @@ export default function PatientDetailView({ patient, role }) {
         </div>
 
         {canViewClinicalRecords ? (
-          patient.medications && patient.medications.length > 0 ? (
-            <div className="table-wrapper">
-              <table className="tech-table">
-                <thead>
-                  <tr>
-                    <th>Rx Code</th>
-                    <th>Description</th>
-                    <th>Dosage & Frequency</th>
-                    <th>Start Date</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {patient.medications.map((m, i) => (
-                    <tr key={m.id || i}>
-                      <td className="font-mono">{m.code}</td>
-                      <td>{m.description}</td>
-                      <td>{m.dosage}</td>
-                      <td className="font-mono">{m.startDate ? m.startDate.split('T')[0] : '—'}</td>
-                      <td>
-                        <span className="status-badge granted">{m.status || 'active'}</span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <p>No active medications prescribed.</p>
-          )
+          <ExpandableSectionTable
+            items={patient.medications}
+            limit={5}
+            label="medications"
+            emptyMessage="No active medications prescribed."
+            renderHeader={() => (
+              <tr>
+                <th>Rx Code</th>
+                <th>Description</th>
+                <th>Dosage & Frequency</th>
+                <th>Start Date</th>
+                <th>Status</th>
+              </tr>
+            )}
+            renderRow={(m, i) => (
+              <tr key={m.id || i}>
+                <td className="font-mono">{m.code}</td>
+                <td>{m.description}</td>
+                <td>{m.dosage}</td>
+                <td className="font-mono">{m.startDate ? m.startDate.split('T')[0] : '—'}</td>
+                <td>
+                  <span className="status-badge granted">{m.status || 'active'}</span>
+                </td>
+              </tr>
+            )}
+          />
         ) : (
           <RedactedField
             fieldName="Prescription Details"
@@ -236,34 +291,30 @@ export default function PatientDetailView({ patient, role }) {
         </div>
 
         {canViewClinicalRecords ? (
-          patient.observations && patient.observations.length > 0 ? (
-            <div className="table-wrapper">
-              <table className="tech-table">
-                <thead>
-                  <tr>
-                    <th>LOINC Code</th>
-                    <th>Metric Description</th>
-                    <th>Value</th>
-                    <th>Unit</th>
-                    <th>Recorded Timestamp</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {patient.observations.map((o, i) => (
-                    <tr key={o.id || i}>
-                      <td className="font-mono">{o.code}</td>
-                      <td>{o.description}</td>
-                      <td className="font-mono" style={{ fontWeight: 600 }}>{o.value}</td>
-                      <td>{o.unit}</td>
-                      <td className="font-mono">{o.recordedDate ? o.recordedDate.replace('T', ' ').substring(0, 19) : '—'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <p>No vitals or lab observations recorded.</p>
-          )
+          <ExpandableSectionTable
+            items={patient.observations}
+            limit={5}
+            label="observations"
+            emptyMessage="No vitals or lab observations recorded."
+            renderHeader={() => (
+              <tr>
+                <th>LOINC Code</th>
+                <th>Metric Description</th>
+                <th>Value</th>
+                <th>Unit</th>
+                <th>Recorded Timestamp</th>
+              </tr>
+            )}
+            renderRow={(o, i) => (
+              <tr key={o.id || i}>
+                <td className="font-mono">{o.code}</td>
+                <td>{o.description}</td>
+                <td className="font-mono" style={{ fontWeight: 600 }}>{o.value}</td>
+                <td>{o.unit}</td>
+                <td className="font-mono">{o.recordedDate ? o.recordedDate.replace('T', ' ').substring(0, 19) : '—'}</td>
+              </tr>
+            )}
+          />
         ) : (
           <RedactedField
             fieldName="Vitals & Lab Values"
@@ -280,36 +331,32 @@ export default function PatientDetailView({ patient, role }) {
         </div>
 
         {canViewClinicalRecords ? (
-          patient.allergies && patient.allergies.length > 0 ? (
-            <div className="table-wrapper">
-              <table className="tech-table">
-                <thead>
-                  <tr>
-                    <th>Allergen</th>
-                    <th>Clinical Reaction</th>
-                    <th>Severity</th>
-                    <th>Recorded Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {patient.allergies.map((a, i) => (
-                    <tr key={a.id || i}>
-                      <td style={{ fontWeight: 600 }}>{a.allergen}</td>
-                      <td>{a.reaction}</td>
-                      <td>
-                        <span className={`status-badge ${a.severity === 'severe' ? 'denied' : 'neutral'}`}>
-                          {a.severity}
-                        </span>
-                      </td>
-                      <td className="font-mono">{a.recordedDate || '—'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <p>No known drug or environmental allergies recorded.</p>
-          )
+          <ExpandableSectionTable
+            items={patient.allergies}
+            limit={5}
+            label="allergies"
+            emptyMessage="No known drug or environmental allergies recorded."
+            renderHeader={() => (
+              <tr>
+                <th>Allergen</th>
+                <th>Clinical Reaction</th>
+                <th>Severity</th>
+                <th>Recorded Date</th>
+              </tr>
+            )}
+            renderRow={(a, i) => (
+              <tr key={a.id || i}>
+                <td style={{ fontWeight: 600 }}>{a.allergen}</td>
+                <td>{a.reaction}</td>
+                <td>
+                  <span className={`status-badge ${a.severity === 'severe' ? 'denied' : 'neutral'}`}>
+                    {a.severity}
+                  </span>
+                </td>
+                <td className="font-mono">{a.recordedDate || '—'}</td>
+              </tr>
+            )}
+          />
         ) : (
           <RedactedField
             fieldName="Allergies"
@@ -317,6 +364,39 @@ export default function PatientDetailView({ patient, role }) {
           />
         )}
       </div>
+
+      {/* Encounters Section */}
+      {canViewClinicalRecords && patient.encounters && patient.encounters.length > 0 && (
+        <div className="tech-box">
+          <div className="tech-box-header">
+            <h3>Clinical Encounters</h3>
+            <span className="status-badge neutral">Ambulatory & Inpatient</span>
+          </div>
+
+          <ExpandableSectionTable
+            items={patient.encounters}
+            limit={5}
+            label="encounters"
+            emptyMessage="No clinical encounters recorded."
+            renderHeader={() => (
+              <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Provider</th>
+                <th>Date</th>
+              </tr>
+            )}
+            renderRow={(enc, i) => (
+              <tr key={enc.id || i}>
+                <td className="font-mono">{enc.encounterType || 'Ambulatory'}</td>
+                <td>{enc.description}</td>
+                <td>{enc.provider || '—'}</td>
+                <td className="font-mono">{enc.startDate ? enc.startDate.replace('T', ' ').substring(0, 10) : '—'}</td>
+              </tr>
+            )}
+          />
+        </div>
+      )}
 
       {/* Appointments Scheduling */}
       <div className="tech-box">
@@ -326,36 +406,32 @@ export default function PatientDetailView({ patient, role }) {
         </div>
 
         {canViewAppointments ? (
-          patient.appointments && patient.appointments.length > 0 ? (
-            <div className="table-wrapper">
-              <table className="tech-table">
-                <thead>
-                  <tr>
-                    <th>Doctor</th>
-                    <th>Department</th>
-                    <th>Scheduled Date</th>
-                    <th>Status</th>
-                    <th>Notes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {patient.appointments.map((apt, i) => (
-                    <tr key={apt.id || i}>
-                      <td>{apt.doctorName}</td>
-                      <td>{apt.department}</td>
-                      <td className="font-mono">{apt.appointmentDate ? apt.appointmentDate.replace('T', ' ').substring(0, 16) : '—'}</td>
-                      <td>
-                        <span className="status-badge granted">{apt.status}</span>
-                      </td>
-                      <td>{apt.notes || '—'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <p>No upcoming appointments scheduled.</p>
-          )
+          <ExpandableSectionTable
+            items={patient.appointments}
+            limit={5}
+            label="appointments"
+            emptyMessage="No upcoming appointments scheduled."
+            renderHeader={() => (
+              <tr>
+                <th>Doctor</th>
+                <th>Department</th>
+                <th>Scheduled Date</th>
+                <th>Status</th>
+                <th>Notes</th>
+              </tr>
+            )}
+            renderRow={(apt, i) => (
+              <tr key={apt.id || i}>
+                <td>{apt.doctorName}</td>
+                <td>{apt.department}</td>
+                <td className="font-mono">{apt.appointmentDate ? apt.appointmentDate.replace('T', ' ').substring(0, 16) : '—'}</td>
+                <td>
+                  <span className="status-badge granted">{apt.status}</span>
+                </td>
+                <td>{apt.notes || '—'}</td>
+              </tr>
+            )}
+          />
         ) : (
           <RedactedField
             fieldName="Appointments"
