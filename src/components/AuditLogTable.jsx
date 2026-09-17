@@ -1,5 +1,39 @@
 import React from 'react';
 
+function formatRelativeTime(timestamp) {
+  if (!timestamp) return '—';
+  const date = new Date(timestamp);
+  if (isNaN(date.getTime())) return timestamp;
+
+  const now = new Date();
+  const elapsedSecs = Math.max(0, Math.floor((now.getTime() - date.getTime()) / 1000));
+
+  if (elapsedSecs < 5) {
+    return '2 secs ago';
+  }
+  if (elapsedSecs < 60) {
+    return `${elapsedSecs} secs ago`;
+  }
+  const minutes = Math.floor(elapsedSecs / 60);
+  if (minutes < 60) {
+    return minutes === 1 ? '1 min ago' : `${minutes} mins ago`;
+  }
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) {
+    return hours === 1 ? '1 hour ago' : `${hours} hours ago`;
+  }
+  const days = Math.floor(hours / 24);
+  if (days < 30) {
+    return days === 1 ? '1 day ago' : `${days} days ago`;
+  }
+  const months = Math.floor(days / 30);
+  if (months < 12) {
+    return months === 1 ? '1 month ago' : `${months} months ago`;
+  }
+  const years = Math.floor(days / 365);
+  return years === 1 ? '1 year ago' : `${years} years ago`;
+}
+
 export default function AuditLogTable({ logs = [] }) {
   if (!logs || logs.length === 0) {
     return (
@@ -32,8 +66,12 @@ export default function AuditLogTable({ logs = [] }) {
 
             return (
               <tr key={log.id || log.hash || Math.random()}>
-                <td className="font-mono" style={{ whiteSpace: 'nowrap', fontSize: '0.82rem' }}>
-                  {log.timestamp ? log.timestamp.replace('T', ' ').substring(0, 19) : '—'}
+                <td
+                  className="font-mono"
+                  style={{ whiteSpace: 'nowrap', fontSize: '0.82rem' }}
+                  title={log.timestamp ? log.timestamp.replace('T', ' ').substring(0, 19) : ''}
+                >
+                  {formatRelativeTime(log.timestamp)}
                 </td>
                 <td className="font-mono">
                   {log.role || log.actorRole || 'System'}
