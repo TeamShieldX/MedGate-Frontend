@@ -8,9 +8,11 @@ export default function LandingPage() {
   const navigate = useNavigate();
   const [simulatorRole, setSimulatorRole] = useState('Researcher');
 
-  const handleTryDemo = () => {
-    startDemoSession();
-    navigate('/patients');
+  const handleScrollToSimulator = () => {
+    const el = document.getElementById('simulator');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   // Sample patient payload for interactive simulator
@@ -136,18 +138,18 @@ export default function LandingPage() {
         <div className="hero-actions">
           <button
             type="button"
-            onClick={handleTryDemo}
+            onClick={handleScrollToSimulator}
             className="btn-primary"
             style={{ padding: '12px 24px', fontSize: '0.95rem' }}
           >
-            Try the demo
+            Explore RBAC Simulator
           </button>
           <Link
             to="/login"
             className="btn-secondary"
             style={{ padding: '12px 24px', fontSize: '0.95rem' }}
           >
-            Login
+            Sign in to Gateway
           </Link>
           <a
             href="https://github.com/TeamShieldX/"
@@ -631,21 +633,21 @@ export default function LandingPage() {
           and verify the cryptographic audit trail directly.
         </p>
         <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
-          <button
-            type="button"
-            onClick={handleTryDemo}
+          <Link
+            to="/login"
             className="btn-primary"
             style={{ padding: '12px 28px', fontSize: '0.95rem' }}
           >
-            Launch Interactive Gateway Demo
-          </button>
-          <Link
-            to="/login"
+            Sign in to Gateway
+          </Link>
+          <button
+            type="button"
+            onClick={handleScrollToSimulator}
             className="btn-secondary"
             style={{ padding: '12px 28px', fontSize: '0.95rem' }}
           >
-            Sign in with Role Credentials
-          </Link>
+            Explore RBAC Simulator
+          </button>
         </div>
       </section>
     </div>
