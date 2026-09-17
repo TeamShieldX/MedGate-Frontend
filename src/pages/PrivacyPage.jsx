@@ -10,7 +10,7 @@ export default function PrivacyPage() {
         </Link>
       </div>
 
-      <div className="tech-box">
+      <div id="hipaa" className="tech-box">
         <div className="tech-box-header">
           <h1>Privacy Policy & ePHI Protection</h1>
           <span className="status-badge granted font-mono">HIPAA § 164.312 Compliant</span>
@@ -22,7 +22,7 @@ export default function PrivacyPage() {
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <div>
+          <div id="least-privilege">
             <h3>1. Principle of Least Privilege</h3>
             <p>
               MedGate minimizes ePHI exposure by implementing data-driven role-based access rules. Rather than
@@ -31,7 +31,7 @@ export default function PrivacyPage() {
             </p>
           </div>
 
-          <div>
+          <div id="redaction">
             <h3>2. Dynamic Field Redaction Matrix</h3>
             <p>
               Data redaction occurs server-side at runtime:
@@ -44,7 +44,7 @@ export default function PrivacyPage() {
             </ul>
           </div>
 
-          <div>
+          <div id="audit-trail">
             <h3>3. Cryptographic Audit Trail and Privacy Logging</h3>
             <p>
               Every access attempt records the caller's role, requested endpoint, outcome (granted or denied),
@@ -53,7 +53,7 @@ export default function PrivacyPage() {
             </p>
           </div>
 
-          <div>
+          <div id="transparency">
             <h3>4. Client-Side Data Transparency</h3>
             <p>
               Redacted fields are never silently withheld. MedGate provides on-screen cryptographic placeholders
