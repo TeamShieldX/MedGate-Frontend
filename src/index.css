@@ -990,6 +990,45 @@ select:focus-visible {
   gap: 12px;
 }
 
+/* Sidebar Logout Actions */
+.sidebar-logout-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 7px 12px;
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--status-denied);
+  border-color: rgba(184, 76, 76, 0.4);
+  background-color: rgba(184, 76, 76, 0.06);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.sidebar-logout-btn:hover {
+  background-color: rgba(184, 76, 76, 0.14);
+  border-color: var(--status-denied);
+}
+
+.sidebar-logout-nav {
+  background: transparent;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+  color: var(--status-denied) !important;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 8px 12px;
+  transition: background-color 0.15s ease;
+}
+
+.sidebar-logout-nav:hover {
+  background-color: rgba(184, 76, 76, 0.08);
+}
+
 /* Responsive Rules */
 @media (max-width: 860px) {
   .app-shell {
@@ -1001,50 +1040,184 @@ select:focus-visible {
     min-height: auto;
     border-right: none;
     border-bottom: 1px solid var(--border-subtle);
-    padding: 16px 20px;
+    padding: 14px 18px;
+  }
+
+  .sidebar .brand-header {
+    padding-bottom: 12px;
+    margin-bottom: 12px;
   }
 
   .sidebar-footer {
-    display: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .sidebar-footer .security-indicator {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 0;
+  }
+
+  .sidebar-logout-btn {
+    width: auto;
+    margin-top: 0;
+    padding: 5px 12px;
   }
 
   .nav-group {
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .nav-link {
+    padding: 6px 12px;
+    font-size: 0.82rem;
   }
 
   .public-navbar {
-    padding: 14px 20px;
+    padding: 12px 18px;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .public-navbar > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .public-navbar > div:last-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   .top-bar {
-    padding: 14px 20px;
+    padding: 12px 18px;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .top-bar-left,
+  .top-bar-right {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   .public-page-container {
-    padding: 28px 16px 48px;
+    padding: 24px 16px 48px;
   }
 
   .page-container {
-    padding: 20px 16px;
+    padding: 18px 16px;
   }
 
   .hero-title {
-    font-size: 1.85rem;
+    font-size: 1.75rem;
+    line-height: 1.25;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .metric-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .metric-cell {
+    padding: 16px 14px;
+  }
+
+  .metric-number {
+    font-size: 1.45rem;
+  }
+
+  .simulator-tab-bar {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+  }
+
+  .simulator-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .chain-block {
+    word-break: break-all;
+    overflow-wrap: anywhere;
+    padding: 12px 14px;
+    font-size: 0.78rem;
+  }
+
+  .chain-arrow {
+    padding-left: 8px;
+    font-size: 0.74rem;
+  }
+
+  .pipeline-grid {
+    grid-template-columns: 1fr;
   }
 
   .footer-top {
     grid-template-columns: 1fr 1fr;
+    gap: 24px;
   }
 }
 
 @media (max-width: 540px) {
+  .metric-strip {
+    grid-template-columns: 1fr;
+  }
+
   .footer-top {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .user-welcome-badge {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+  }
+
+  .brand-title {
+    font-size: 1.05rem;
   }
 }
 
