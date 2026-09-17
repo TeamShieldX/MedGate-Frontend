@@ -52,16 +52,19 @@ export default function Layout() {
               )}
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <a
-                href="https://github.com/TeamShieldX/MedGate-Frontend"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="theme-toggle-btn"
-                title="View TeamShieldX MedGate on GitHub"
-              >
-                GitHub
-              </a>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+              {/* Show GitHub ONLY when logged out */}
+              {!isLoggedIn && (
+                <a
+                  href="https://github.com/TeamShieldX/MedGate-Frontend"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="theme-toggle-btn"
+                  title="View TeamShieldX MedGate on GitHub"
+                >
+                  GitHub
+                </a>
+              )}
 
               {/* When logged in: show Welcome [user], RoleSwitcher, and Log out */}
               {isLoggedIn ? (
@@ -151,13 +154,32 @@ export default function Layout() {
           >
             {isLoggedIn ? 'Session Info' : 'Login'}
           </NavLink>
+
+          {isLoggedIn && (
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="nav-link sidebar-logout-nav"
+              title="Log out of current session"
+            >
+              Log out
+            </button>
+          )}
         </nav>
 
         <div className="sidebar-footer">
           {isLoggedIn ? (
             <div className="security-indicator">
-              Active role: <strong>{currentRole}</strong>
-              <span>User: {usernameDisplay}</span>
+              <div>Active role: <strong>{currentRole}</strong></div>
+              <div>User: <strong>{usernameDisplay}</strong></div>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="btn-secondary sidebar-logout-btn"
+                title="Log out of current session"
+              >
+                Log out
+              </button>
             </div>
           ) : (
             <div className="security-indicator">
@@ -216,17 +238,19 @@ export default function Layout() {
           </div>
 
           <div className="top-bar-right">
-            <a
-              href="https://github.com/TeamShieldX/MedGate-Frontend"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="theme-toggle-btn"
-              title="View on GitHub"
-            >
-              GitHub
-            </a>
+            {!isLoggedIn && (
+              <a
+                href="https://github.com/TeamShieldX/MedGate-Frontend"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="theme-toggle-btn"
+                title="View on GitHub"
+              >
+                GitHub
+              </a>
+            )}
 
-            {/* When logged in: show Welcome [user], RoleSwitcher, and Log out */}
+            {/* When logged in: show Welcome [user], RoleSwitcher */}
             {isLoggedIn ? (
               <>
                 <span className="user-welcome-badge">
@@ -245,17 +269,6 @@ export default function Layout() {
             )}
 
             <ThemeToggle />
-
-            {isLoggedIn && (
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="btn-text"
-                title="Log out of current session"
-              >
-                Log out
-              </button>
-            )}
           </div>
         </header>
 
