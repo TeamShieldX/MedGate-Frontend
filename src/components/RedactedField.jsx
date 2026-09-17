@@ -4,12 +4,12 @@ import React from 'react';
  * Redaction Visibility Component
  * Displays a visibly struck-through / restricted placeholder with lock icon and reason.
  */
-export default function RedactedField({ reason = 'Redacted for current role', fieldName = null }) {
+export default function RedactedField({ reason = 'Hidden — Restricted role', fieldName = null }) {
   return (
     <span
       className="redacted-placeholder"
-      title={`Security Guarantee: This field is restricted by RBAC policy (${reason})`}
-      aria-label={`Redacted field: ${reason}`}
+      title={`Security Guarantee: This field is restricted by role access rules (${reason})`}
+      aria-label={`Hidden field: ${reason}`}
     >
       <svg
         viewBox="0 0 24 24"
