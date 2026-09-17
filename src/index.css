@@ -849,6 +849,47 @@ select:focus-visible {
   color: var(--text-primary);
 }
 
+/* Participant Banner Section */
+.participant-banner-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px 0 12px;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 4px;
+  gap: 12px;
+}
+
+.participant-label {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+  text-transform: none;
+}
+
+.participant-banner-link {
+  display: inline-block;
+  max-width: 620px;
+  width: 100%;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.participant-banner-link:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+.participant-banner-img {
+  width: 100%;
+  height: auto;
+  max-height: 90px;
+  object-fit: contain;
+  display: block;
+}
+
 .footer-bottom {
   display: flex;
   justify-content: space-between;
