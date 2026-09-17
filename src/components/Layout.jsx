@@ -32,9 +32,16 @@ export default function Layout() {
                 <span className="brand-title">MEDGATE</span>
               </Link>
 
-              {/* Show Patients and Audit Log ONLY if user is logged in */}
+              {/* Show Console, Patients and Audit Log ONLY if user is logged in */}
               {isLoggedIn && (
                 <nav className="public-nav-links" aria-label="Public navigation">
+                  <NavLink
+                    to="/overview"
+                    className={({ isActive }) => `public-nav-link ${isActive ? 'active' : ''}`}
+                  >
+                    Console
+                  </NavLink>
+
                   <NavLink
                     to="/patients"
                     className={({ isActive }) => `public-nav-link ${isActive ? 'active' : ''}`}
@@ -127,7 +134,7 @@ export default function Layout() {
 
         <nav className="nav-group" aria-label="System navigation">
           <NavLink
-            to="/"
+            to={isLoggedIn ? "/overview" : "/"}
             end
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
@@ -149,22 +156,11 @@ export default function Layout() {
           </NavLink>
 
           <NavLink
-            to="/login"
+            to={isLoggedIn ? "/session" : "/login"}
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
             {isLoggedIn ? 'Session Info' : 'Login'}
           </NavLink>
-
-          {isLoggedIn && (
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="nav-link sidebar-logout-nav"
-              title="Log out of current session"
-            >
-              Log out
-            </button>
-          )}
         </nav>
 
         <div className="sidebar-footer">
@@ -172,14 +168,6 @@ export default function Layout() {
             <div className="security-indicator">
               <div>Active role: <strong>{currentRole}</strong></div>
               <div>User: <strong>{usernameDisplay}</strong></div>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="btn-secondary sidebar-logout-btn"
-                title="Log out of current session"
-              >
-                Log out
-              </button>
             </div>
           ) : (
             <div className="security-indicator">
@@ -227,6 +215,18 @@ export default function Layout() {
             />
             <span className="hackathon-badge-suffix" style={{ fontSize: '0.72rem' }}>Hackathon</span>
           </a>
+
+          {/* Log out at the bottom of the sidebar */}
+          {isLoggedIn && (
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="btn-secondary sidebar-logout-btn"
+              title="Log out of current session"
+            >
+              Log out
+            </button>
+          )}
         </div>
       </aside>
 
