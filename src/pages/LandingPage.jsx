@@ -1,7 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 export default function LandingPage() {
+  const { startDemoSession } = useAuth();
+  const navigate = useNavigate();
+
+  const handleTryDemo = () => {
+    startDemoSession();
+    navigate('/patients');
+  };
+
   return (
     <div style={{ maxWidth: '960px' }}>
       {/* Hero Section */}
@@ -39,9 +48,13 @@ export default function LandingPage() {
 
         {/* Actions */}
         <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
-          <Link to="/patients" className="btn-primary">
+          <button
+            type="button"
+            onClick={handleTryDemo}
+            className="btn-primary"
+          >
             Try the demo
-          </Link>
+          </button>
           <Link to="/login" className="btn-secondary">
             Login
           </Link>
