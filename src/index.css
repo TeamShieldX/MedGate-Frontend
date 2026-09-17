@@ -540,6 +540,12 @@ select:focus-visible {
   gap: 12px;
 }
 
+.patient-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
 /* Metrics & Benchmark Display */
 .metric-strip {
   display: grid;
@@ -1273,7 +1279,34 @@ select:focus-visible {
   }
 
   .page-container {
-    padding: 18px 16px;
+    padding: 12px 8px;
+  }
+
+  .tech-box {
+    padding: 14px 10px;
+    margin-bottom: 16px;
+  }
+
+  .tech-box-header {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    gap: 8px;
+  }
+
+  .table-wrapper {
+    margin: 10px 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tech-table th,
+  .tech-table td {
+    padding: 8px 8px;
+    font-size: 0.8rem;
+  }
+
+  .patient-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .hero-section {
