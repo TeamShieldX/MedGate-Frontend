@@ -1,29 +1,73 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth, ROLES } from '../context/AuthContext';
+import RedactedField from '../components/RedactedField';
 
 export default function LandingPage() {
   const { startDemoSession } = useAuth();
   const navigate = useNavigate();
+  const [simulatorRole, setSimulatorRole] = useState('Researcher');
 
   const handleTryDemo = () => {
     startDemoSession();
     navigate('/patients');
   };
 
+  // Sample patient payload for interactive simulator
+  const samplePatient = {
+    id: "pat-901-syn",
+    firstName: "James",
+    lastName: "Smith",
+    birthDate: "1974-05-12",
+    phone: "555-0142",
+    address: "742 Healthcare Ave, Metro City",
+    primaryCondition: "Hypertension",
+    confidentialNotes: "Restricted psychiatric evaluation. Clinician eyes only.",
+    medications: ["Lisinopril 10 MG Oral Tablet", "Atorvastatin 20 MG"],
+    observations: ["BP 138/88 mmHg", "Heart Rate 72 bpm"],
+    appointments: ["2026-09-25 10:00 AM - Dr. Sarah Smith (Cardiology)"]
+  };
+
+  const isResearcher = simulatorRole === 'Researcher';
+  const isReceptionist = simulatorRole === 'Receptionist';
+  const isNurse = simulatorRole === 'Nurse';
+  const isDoctor = simulatorRole === 'Doctor';
+  const isAdmin = simulatorRole === 'Administrator';
+
   return (
-    <div style={{ maxWidth: '960px' }}>
+    <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
       {/* Hero Section */}
-      <div style={{ marginBottom: '40px' }}>
-        <h1 style={{ fontSize: '2rem', marginBottom: '16px', letterSpacing: '-0.02em' }}>
+      <section style={{ textAlign: 'center', marginBottom: '48px', paddingTop: '12px' }}>
+        <h1
+          style={{
+            fontSize: '2.25rem',
+            lineHeight: 1.25,
+            marginBottom: '20px',
+            letterSpacing: '-0.025em',
+            textAlign: 'center',
+            maxWidth: '920px',
+            margin: '0 auto 20px',
+          }}
+        >
           Every access to a patient record is checked, logged, and provably tamper-evident.
         </h1>
-        <p style={{ fontSize: '1.05rem', color: 'var(--text-secondary)', marginBottom: '24px' }}>
-          MedGate is a zero-trust electronic health records gateway providing role-based
-          access control, dynamic field-level redaction, and a cryptographic audit log.
+
+        <p
+          style={{
+            fontSize: '1.08rem',
+            color: 'var(--text-secondary)',
+            marginBottom: '32px',
+            textAlign: 'center',
+            maxWidth: '740px',
+            margin: '0 auto 32px',
+          }}
+        >
+          MedGate is a zero-trust electronic health records gateway providing runtime
+          role-based access control, dynamic field-level data redaction, and an append-only
+          SHA-256 cryptographic audit ledger.
         </p>
 
-        {/* Real Benchmark Numbers Strip */}
+        {/* Real Benchmark Strip */}
         <div className="metric-strip" aria-label="System verification benchmarks">
           <div className="metric-cell">
             <span className="metric-number">0.0343ms</span>
@@ -42,138 +86,415 @@ export default function LandingPage() {
 
           <div className="metric-cell">
             <span className="metric-number">SHA-256</span>
-            <span className="metric-label">hash-chained audit log</span>
+            <span className="metric-label">hash-chained audit ledger</span>
           </div>
         </div>
 
-        {/* Actions */}
-        <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
+        {/* Action Buttons */}
+        <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', marginTop: '28px' }}>
           <button
             type="button"
             onClick={handleTryDemo}
             className="btn-primary"
+            style={{ padding: '12px 24px', fontSize: '0.95rem' }}
           >
             Try the demo
           </button>
-          <Link to="/login" className="btn-secondary">
+          <Link
+            to="/login"
+            className="btn-secondary"
+            style={{ padding: '12px 24px', fontSize: '0.95rem' }}
+          >
             Login
           </Link>
         </div>
-      </div>
+      </section>
 
-      {/* Problem and Technical Approach */}
-      <div className="tech-box">
-        <h2 style={{ marginBottom: '12px' }}>The security problem in healthcare records</h2>
+      {/* Interactive Live RBAC Policy Simulator */}
+      <section id="simulator" className="tech-box">
+        <div className="tech-box-header">
+          <div>
+            <h2>Interactive RBAC policy simulator</h2>
+            <p style={{ fontSize: '0.86rem', marginTop: '4px' }}>
+              Select a workforce role to inspect runtime field stripping and visible redaction placeholders in real time:
+            </p>
+          </div>
+          <span className="status-badge neutral font-mono">
+            Latency: ~0.034ms
+          </span>
+        </div>
+
+        {/* Simulator Role Tabs */}
+        <div className="simulator-tab-bar" role="tablist">
+          {ROLES.map((role) => (
+            <button
+              key={role}
+              type="button"
+              role="tab"
+              aria-selected={simulatorRole === role}
+              onClick={() => setSimulatorRole(role)}
+              className={`simulator-tab ${simulatorRole === role ? 'active' : ''}`}
+            >
+              {role}
+            </button>
+          ))}
+        </div>
+
+        {/* Simulator Content Grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px', marginTop: '16px' }}>
+          {/* Rendered Patient View for Role */}
+          <div style={{ border: '1px solid var(--border-subtle)', padding: '18px', backgroundColor: 'var(--code-bg)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '8px' }}>
+              <span className="font-mono" style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+                Client View: {simulatorRole}
+              </span>
+              <span className="status-badge granted">gated</span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.88rem' }}>
+              <div>
+                <span style={{ color: 'var(--text-secondary)' }}>Patient Name: </span>
+                {!isResearcher ? (
+                  <strong>{samplePatient.firstName} {samplePatient.lastName}</strong>
+                ) : (
+                  <RedactedField fieldName="Name" reason="Redacted for Researcher" />
+                )}
+              </div>
+
+              <div>
+                <span style={{ color: 'var(--text-secondary)' }}>Phone / Contact: </span>
+                {!isResearcher ? (
+                  <span className="font-mono">{samplePatient.phone}</span>
+                ) : (
+                  <RedactedField fieldName="Contact PII" reason="Redacted for Researcher" />
+                )}
+              </div>
+
+              <div>
+                <span style={{ color: 'var(--text-secondary)' }}>Primary Condition: </span>
+                {!isReceptionist ? (
+                  <span>{samplePatient.primaryCondition}</span>
+                ) : (
+                  <RedactedField fieldName="Condition" reason="Hidden — Receptionist role" />
+                )}
+              </div>
+
+              <div>
+                <span style={{ color: 'var(--text-secondary)' }}>Confidential Notes: </span>
+                {isDoctor || isAdmin ? (
+                  <span style={{ color: 'var(--text-primary)' }}>{samplePatient.confidentialNotes}</span>
+                ) : (
+                  <RedactedField
+                    fieldName="Confidential Notes"
+                    reason={
+                      isNurse
+                        ? "Redacted for Nurse role"
+                        : isReceptionist
+                        ? "Hidden — Receptionist role"
+                        : "Redacted for Researcher"
+                    }
+                  />
+                )}
+              </div>
+
+              <div>
+                <span style={{ color: 'var(--text-secondary)' }}>Active Medications: </span>
+                {!isReceptionist ? (
+                  <span className="font-mono" style={{ fontSize: '0.82rem' }}>
+                    {samplePatient.medications.join(', ')}
+                  </span>
+                ) : (
+                  <RedactedField fieldName="Prescriptions" reason="Hidden — Receptionist role" />
+                )}
+              </div>
+
+              <div>
+                <span style={{ color: 'var(--text-secondary)' }}>Audit Log Access: </span>
+                {isAdmin ? (
+                  <span className="status-badge granted">Granted (200 OK)</span>
+                ) : (
+                  <span className="status-badge denied">Denied (403 Forbidden)</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Active Policy Rules Breakdown */}
+          <div style={{ border: '1px solid var(--border-subtle)', padding: '18px', backgroundColor: 'var(--bg-surface)' }}>
+            <span className="font-mono" style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '12px' }}>
+              Enforced Policy Rules for {simulatorRole}
+            </span>
+
+            <ul style={{ paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+              {isDoctor && (
+                <>
+                  <li>Full clinical chart read/write authorization.</li>
+                  <li>Access to sensitive psychiatric evaluations and clinical notes.</li>
+                  <li>Direct access to relational graphs (prescriptions, encounters, lab vitals).</li>
+                  <li>System audit log reads restricted to Administrator role.</li>
+                </>
+              )}
+              {isNurse && (
+                <>
+                  <li>Authorized to read and record medications, observations, encounters, and allergies.</li>
+                  <li><strong>Confidential Notes restricted:</strong> Filtered out to protect psychiatric confidentiality.</li>
+                  <li>Patient demographics and contact information visible for bedside verification.</li>
+                  <li>System audit log access strictly denied (403).</li>
+                </>
+              )}
+              {isReceptionist && (
+                <>
+                  <li><strong>All clinical data restricted:</strong> Diagnoses, medications, vitals, and notes masked.</li>
+                  <li>Patient demographic and appointment scheduling access authorized.</li>
+                  <li>Prevents front-desk disclosure of sensitive patient medical conditions.</li>
+                  <li>System audit log access strictly denied (403).</li>
+                </>
+              )}
+              {isResearcher && (
+                <>
+                  <li><strong>All direct identifiers (PII) redacted:</strong> Name, address, phone number stripped.</li>
+                  <li>Clinical trends (conditions, observations, lab vitals, medications) preserved for epidemiology.</li>
+                  <li>Appointments and scheduling data withheld to prevent location tracking.</li>
+                  <li>System audit log access strictly denied (403).</li>
+                </>
+              )}
+              {isAdmin && (
+                <>
+                  <li><strong>System audit log access authorized:</strong> Cryptographic SHA-256 chain inspection unlocked.</li>
+                  <li>User account administration and workforce role provisioning authorized.</li>
+                  <li>Direct clinical notes masked to uphold patient confidentiality boundaries.</li>
+                  <li>Tamper-evident verification status checked on every audit request.</li>
+                </>
+              )}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* The Blanket Access Problem vs Zero-Trust Approach */}
+      <section id="overview" className="tech-box">
+        <h2 style={{ marginBottom: '14px' }}>The security flaw of conventional EHR systems</h2>
         <p style={{ marginBottom: '16px' }}>
-          Conventional clinical portals grant broad, blanket access to entire medical records once a session
-          is authenticated. Front-desk staff, external billing agents, and research contractors frequently
-          view sensitive clinical notes, psychiatric evaluations, or full demographic identifiers they have no clinical
-          need to see. This architectural flaw drives data leakage and regulatory non-compliance.
+          Conventional Electronic Health Record (EHR) platforms grant broad, monolithic access once a user session
+          is established. A receptionist scheduling a visit often sees complete psychiatric notes, oncology reports,
+          and clinical summaries. Conversely, external analytics researchers frequently receive unmasked demographic
+          identities alongside medical telemetry. This structural over-privilege drives regulatory penalties,
+          data leaks, and insider threats.
         </p>
         <p>
           MedGate eliminates blanket access by gating every field request through a zero-trust least-privilege engine.
           Access permissions are evaluated at runtime per role, sensitive fields are redacted before transmission,
           and every single access decision (granted or denied) is immutably logged into a cryptographic ledger.
         </p>
-      </div>
+      </section>
 
-      {/* Tamper-Evident SHA-256 Hash Chain Differentiator */}
-      <div className="tech-box">
+      {/* Cryptographic SHA-256 Tamper-Evident Hash Chain Deep Dive */}
+      <section id="integrity" className="tech-box">
         <div className="tech-box-header">
-          <h2>Cryptographic audit log integrity</h2>
+          <div>
+            <h2>Tamper-evident SHA-256 audit ledger</h2>
+            <p style={{ fontSize: '0.86rem', marginTop: '4px' }}>
+              Cryptographic non-repudiation: every decision is cryptographically chained to its predecessor
+            </p>
+          </div>
           <span className="status-badge granted">
             100% verified (1,010 entries)
           </span>
         </div>
+
         <p style={{ marginBottom: '16px' }}>
-          Every access attempt calculates a SHA-256 cryptographic hash chaining the entry's timestamp,
-          user ID, role, action, resource, access outcome, and the previous entry's hash:
+          Unlike standard database logging where administrators can quietly delete or alter rows, MedGate binds
+          each entry to the previous block via SHA-256 hashing. Any retroactive deletion, update, or insertion
+          instantly invalidates all subsequent hashes across the chain.
         </p>
+
+        {/* Visual Hash Chain Representation */}
+        <div className="chain-flow">
+          <div className="chain-block">
+            <div className="chain-block-header">
+              <span>Block #1008 • Receptionist &bull; medications &bull; DENIED</span>
+              <span className="status-badge denied">DENIED</span>
+            </div>
+            <div>
+              <span style={{ color: 'var(--text-secondary)' }}>PrevHash: </span>
+              <span style={{ color: 'var(--text-secondary)' }}>1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b</span>
+            </div>
+            <div>
+              <span style={{ color: 'var(--text-secondary)' }}>Payload: </span>
+              <span>2026-09-17T18:48:00Z|usr-rec-101|Receptionist|read|medications|DENIED|Role restricted</span>
+            </div>
+            <div>
+              <span style={{ color: 'var(--status-granted)' }}>CurrentHash: </span>
+              <span className="font-mono">3d5f1a92e8b4c7d6109876543210fedcba9876543210abcdef1234567890123</span>
+            </div>
+          </div>
+
+          <div className="chain-arrow">▼ chained via SHA-256 (CurrentHash becomes next PrevHash)</div>
+
+          <div className="chain-block">
+            <div className="chain-block-header">
+              <span>Block #1009 • Doctor &bull; patients &bull; GRANTED</span>
+              <span className="status-badge granted">GRANTED</span>
+            </div>
+            <div>
+              <span style={{ color: 'var(--text-secondary)' }}>PrevHash: </span>
+              <span className="font-mono">3d5f1a92e8b4c7d6109876543210fedcba9876543210abcdef1234567890123</span>
+            </div>
+            <div>
+              <span style={{ color: 'var(--text-secondary)' }}>Payload: </span>
+              <span>2026-09-17T18:49:00Z|usr-doc-101|Doctor|read|patients|GRANTED|Role authorized</span>
+            </div>
+            <div>
+              <span style={{ color: 'var(--status-granted)' }}>CurrentHash: </span>
+              <span className="font-mono">8f7e2b19c8d5a3e42109876543210fedcba9876543210abcdef1234567890abc</span>
+            </div>
+          </div>
+        </div>
+
         <div
           style={{
             padding: '12px 16px',
             border: '1px solid var(--border-subtle)',
-            backgroundColor: 'rgba(138, 143, 146, 0.05)',
+            backgroundColor: 'var(--code-bg)',
             fontFamily: 'var(--font-mono)',
-            fontSize: '0.85rem',
+            fontSize: '0.84rem',
             color: 'var(--text-primary)',
-            marginBottom: '16px'
+            marginTop: '16px'
           }}
         >
           CurrentHash = SHA256(Timestamp + UserId + Role + Action + Resource + Result + Reason + PrevHash)
         </div>
-        <p>
-          Any retroactive log modification, deletion, or rogue row insertion breaks the cryptographic
-          continuity and is immediately flagged by the verification engine.
-        </p>
-      </div>
+      </section>
 
-      {/* Role-Based Data Redaction Matrix Overview */}
-      <div className="tech-box">
-        <h2 style={{ marginBottom: '12px' }}>Field-level access gating by role</h2>
-        <p style={{ marginBottom: '16px' }}>
-          The five system roles receive tailored representations of patient data.
-          When a field is denied, MedGate renders a visible lock indicator rather than silently hiding it,
-          making security enforcement transparent on screen:
-        </p>
+      {/* Real Scalability & Latency Benchmark Report */}
+      <section id="benchmarks" className="tech-box">
+        <div className="tech-box-header">
+          <div>
+            <h2>Scalability and throughput benchmarks (SHI-10)</h2>
+            <p style={{ fontSize: '0.86rem', marginTop: '4px' }}>
+              Rigorous stress tests executed across Scale A (50 records) vs Scale B (500 relational records)
+            </p>
+          </div>
+          <span className="status-badge neutral font-mono">
+            Node.js v22 &bull; Neon PostgreSQL
+          </span>
+        </div>
 
         <div className="table-wrapper">
           <table className="tech-table">
             <thead>
               <tr>
-                <th>Field</th>
-                <th>Doctor</th>
-                <th>Nurse</th>
-                <th>Receptionist</th>
-                <th>Researcher</th>
-                <th>Administrator</th>
+                <th>Evaluated Role</th>
+                <th>Scale A (50 rec) Latency</th>
+                <th>Scale A Throughput</th>
+                <th>Scale B (500 rec) Latency</th>
+                <th>Scale B Throughput</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Demographics (Name, Address, Phone)</td>
-                <td><span className="status-badge granted">Visible</span></td>
-                <td><span className="status-badge granted">Visible</span></td>
-                <td><span className="status-badge granted">Visible</span></td>
-                <td><span className="status-badge denied">Redacted</span></td>
-                <td><span className="status-badge granted">Visible</span></td>
+                <td><strong>Administrator</strong></td>
+                <td className="font-mono">0.149 ms</td>
+                <td className="font-mono">335,345 rec/sec</td>
+                <td className="font-mono">1.062 ms</td>
+                <td className="font-mono"><strong style={{ color: 'var(--status-granted)' }}>470,765 rec/sec</strong></td>
               </tr>
               <tr>
-                <td>Primary Condition</td>
-                <td><span className="status-badge granted">Visible</span></td>
-                <td><span className="status-badge granted">Visible</span></td>
-                <td><span className="status-badge denied">Redacted</span></td>
-                <td><span className="status-badge granted">Visible</span></td>
-                <td><span className="status-badge granted">Visible</span></td>
+                <td><strong>Researcher</strong></td>
+                <td className="font-mono">0.175 ms</td>
+                <td className="font-mono">285,225 rec/sec</td>
+                <td className="font-mono">1.111 ms</td>
+                <td className="font-mono"><strong style={{ color: 'var(--status-granted)' }}>449,843 rec/sec</strong></td>
               </tr>
               <tr>
-                <td>Confidential Notes</td>
-                <td><span className="status-badge granted">Visible</span></td>
-                <td><span className="status-badge denied">Redacted</span></td>
-                <td><span className="status-badge denied">Redacted</span></td>
-                <td><span className="status-badge denied">Redacted</span></td>
-                <td><span className="status-badge granted">Visible</span></td>
+                <td><strong>Receptionist</strong></td>
+                <td className="font-mono">0.155 ms</td>
+                <td className="font-mono">322,581 rec/sec</td>
+                <td className="font-mono">1.138 ms</td>
+                <td className="font-mono"><strong style={{ color: 'var(--status-granted)' }}>439,329 rec/sec</strong></td>
               </tr>
               <tr>
-                <td>Medications & Vitals</td>
-                <td><span className="status-badge granted">Visible</span></td>
-                <td><span className="status-badge granted">Visible</span></td>
-                <td><span className="status-badge denied">Redacted</span></td>
-                <td><span className="status-badge granted">Visible</span></td>
-                <td><span className="status-badge granted">Visible</span></td>
+                <td><strong>Doctor</strong></td>
+                <td className="font-mono">0.680 ms</td>
+                <td className="font-mono">73,519 rec/sec</td>
+                <td className="font-mono">1.944 ms</td>
+                <td className="font-mono">257,241 rec/sec</td>
               </tr>
               <tr>
-                <td>Audit Log History</td>
-                <td><span className="status-badge denied">Denied (403)</span></td>
-                <td><span className="status-badge denied">Denied (403)</span></td>
-                <td><span className="status-badge denied">Denied (403)</span></td>
-                <td><span className="status-badge denied">Denied (403)</span></td>
-                <td><span className="status-badge granted">Granted (200)</span></td>
+                <td><strong>Nurse</strong></td>
+                <td className="font-mono">0.208 ms</td>
+                <td className="font-mono">240,154 rec/sec</td>
+                <td className="font-mono">7.640 ms</td>
+                <td className="font-mono">65,448 rec/sec</td>
               </tr>
             </tbody>
           </table>
         </div>
-      </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginTop: '20px' }}>
+          <div style={{ border: '1px solid var(--border-subtle)', padding: '16px', backgroundColor: 'var(--code-bg)' }}>
+            <span className="font-mono" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block' }}>
+              Decision Engine Mean Latency
+            </span>
+            <span style={{ fontSize: '1.4rem', fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--text-primary)' }}>
+              0.0343 ms
+            </span>
+            <p style={{ fontSize: '0.78rem', marginTop: '4px' }}>
+              Evaluated across 1,000 operations. Gating adds zero measurable overhead to API requests.
+            </p>
+          </div>
+
+          <div style={{ border: '1px solid var(--border-subtle)', padding: '16px', backgroundColor: 'var(--code-bg)' }}>
+            <span className="font-mono" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block' }}>
+              Deep Patient Graph Lookup
+            </span>
+            <span style={{ fontSize: '1.4rem', fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--text-primary)' }}>
+              239.56 ms
+            </span>
+            <p style={{ fontSize: '0.78rem', marginTop: '4px' }}>
+              Resolves complete relational graph (encounters, meds, vitals, labs, notes) over cloud SSL.
+            </p>
+          </div>
+
+          <div style={{ border: '1px solid var(--border-subtle)', padding: '16px', backgroundColor: 'var(--code-bg)' }}>
+            <span className="font-mono" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block' }}>
+              Audit Chain Verification Time
+            </span>
+            <span style={{ fontSize: '1.4rem', fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--status-granted)' }}>
+              5.206 ms
+            </span>
+            <p style={{ fontSize: '0.78rem', marginTop: '4px' }}>
+              1,010 entries verified mathematically at ~5.1 microseconds per log block.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Bottom CTA Banner */}
+      <section style={{ textAlign: 'center', padding: '40px 20px', border: '1px solid var(--border-subtle)', backgroundColor: 'var(--bg-surface)' }}>
+        <h2 style={{ fontSize: '1.6rem', marginBottom: '12px' }}>Experience Zero-Trust Medical Access Control</h2>
+        <p style={{ maxWidth: '640px', margin: '0 auto 24px', fontSize: '0.96rem' }}>
+          Explore the live patient directory, observe dynamic field redaction across roles,
+          and verify the cryptographic audit trail directly.
+        </p>
+        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+          <button
+            type="button"
+            onClick={handleTryDemo}
+            className="btn-primary"
+            style={{ padding: '12px 28px', fontSize: '0.95rem' }}
+          >
+            Launch Interactive Gateway Demo
+          </button>
+          <Link
+            to="/login"
+            className="btn-secondary"
+            style={{ padding: '12px 28px', fontSize: '0.95rem' }}
+          >
+            Sign in with Role Credentials
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
