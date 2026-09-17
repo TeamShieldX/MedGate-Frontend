@@ -76,9 +76,28 @@ export default function LandingPage() {
     <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
       {/* Hero Section (Left-aligned typography inside centered page container) */}
       <section className="hero-section">
-        <div className="hero-tag">
-          <span>●</span>
-          <span>ZERO-TRUST GATEWAY &bull; 100% AUDIT INTEGRITY</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '20px' }}>
+          <div className="hero-tag" style={{ margin: 0 }}>
+            <span>●</span>
+            <span>ZERO-TRUST GATEWAY &bull; 100% AUDIT INTEGRITY</span>
+          </div>
+
+          <a
+            href="https://nitda.gov.ng"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hackathon-hero-badge"
+            title="NITDA International Cybersecurity Hackathon (ICSC)"
+          >
+            <img
+              src="/icschack.png"
+              alt="NITDA International Cybersecurity Hackathon"
+              style={{ height: '22px', width: 'auto', display: 'block' }}
+            />
+            <span style={{ fontSize: '0.78rem', color: '#EDEFEE', fontFamily: 'var(--font-mono)' }}>
+              NITDA Hackathon Participant
+            </span>
+          </a>
         </div>
 
         <h1 className="hero-title">
