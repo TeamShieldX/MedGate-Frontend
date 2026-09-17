@@ -1,16 +1,17 @@
 /* =========================================================
    MEDGATE DESIGN SYSTEM
    Zero-Trust RBAC & Electronic Health Records Gateway
-   Exact 5-Color System:
-   - Base dark background: #0F1417
-   - Primary text on dark: #EDEFEE
-   - Accent (granted / success / primary action): #3D8B72
+   Exact 5-Color System with Dark & Light Themes:
+   - Base background: #0F1417 (Dark) / #F6F8F9 (Light)
+   - Primary text: #EDEFEE (Dark) / #0F1417 (Light)
+   - Accent (granted / success / primary action): #3D8B72 (Dark) / #2E735B (Light)
    - Denied / error: #B84C4C
-   - Secondary text / redacted placeholder: #8A8F92
+   - Secondary text / redacted placeholder: #8A8F92 (Dark) / #5A6065 (Light)
    ========================================================= */
 
 :root {
   --bg-base: #0F1417;
+  --bg-surface: #0F1417;
   --text-primary: #EDEFEE;
   --text-secondary: #8A8F92;
   --status-granted: #3D8B72;
@@ -18,11 +19,31 @@
 
   --border-subtle: rgba(138, 143, 146, 0.2);
   --border-strong: rgba(138, 143, 146, 0.4);
+  --table-head-bg: rgba(138, 143, 146, 0.05);
+  --table-row-hover: rgba(138, 143, 146, 0.03);
+  --metric-strip-bg: rgba(138, 143, 146, 0.2);
 
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg-base: #F6F8F9;
+  --bg-surface: #FFFFFF;
+  --text-primary: #0F1417;
+  --text-secondary: #5A6065;
+  --status-granted: #2E735B;
+  --status-denied: #B84C4C;
+
+  --border-subtle: rgba(15, 20, 23, 0.12);
+  --border-strong: rgba(15, 20, 23, 0.28);
+  --table-head-bg: rgba(15, 20, 23, 0.04);
+  --table-row-hover: rgba(15, 20, 23, 0.02);
+  --metric-strip-bg: rgba(15, 20, 23, 0.12);
+
+  color-scheme: light;
 }
 
 /* Reset & Box Sizing */
@@ -95,7 +116,49 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
-/* Global Navigation & Layout */
+/* Public Navbar (for Landing and Login pages) */
+.public-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-base);
+}
+
+.public-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 32px;
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
+  gap: 20px;
+}
+
+.public-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.public-nav-link {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  transition: color 0.15s ease;
+}
+
+.public-nav-link:hover, .public-nav-link.active {
+  color: var(--text-primary);
+}
+
+.public-page-container {
+  padding: 40px 32px;
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto 40px 0;
+}
+
+/* App Shell Layout (with Sidebar for authenticated pages) */
 .app-shell {
   display: flex;
   min-height: 100vh;
@@ -105,7 +168,7 @@ select:focus-visible {
 .sidebar {
   width: 260px;
   min-height: 100vh;
-  background-color: var(--bg-base);
+  background-color: var(--bg-surface);
   border-right: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
@@ -196,7 +259,7 @@ select:focus-visible {
   align-items: center;
   padding: 16px 32px;
   border-bottom: 1px solid var(--border-subtle);
-  background-color: var(--bg-base);
+  background-color: var(--bg-surface);
   gap: 16px;
 }
 
@@ -215,13 +278,33 @@ select:focus-visible {
 .top-bar-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
 
 .page-container {
   padding: 32px;
   max-width: 1300px;
   width: 100%;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.theme-toggle-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
 }
 
 /* Role Switcher Component */
@@ -238,7 +321,7 @@ select:focus-visible {
 }
 
 .role-select {
-  background-color: var(--bg-base);
+  background-color: var(--bg-surface);
   color: var(--text-primary);
   border: 1px solid var(--border-strong);
   padding: 6px 10px;
@@ -258,7 +341,7 @@ select:focus-visible {
   justify-content: center;
   padding: 10px 18px;
   background-color: var(--status-granted);
-  color: var(--text-primary);
+  color: #EDEFEE;
   font-family: var(--font-mono);
   font-size: 0.88rem;
   font-weight: 600;
@@ -289,9 +372,23 @@ select:focus-visible {
   border-color: var(--text-primary);
 }
 
+.btn-text {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.btn-text:hover {
+  color: var(--status-denied);
+}
+
 /* Cards & Containers (Flat, Technical, No soft shadows) */
 .tech-box {
-  background-color: var(--bg-base);
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   padding: 20px;
   margin-bottom: 20px;
@@ -311,13 +408,13 @@ select:focus-visible {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1px;
-  background-color: var(--border-subtle);
+  background-color: var(--metric-strip-bg);
   border: 1px solid var(--border-subtle);
   margin: 28px 0;
 }
 
 .metric-cell {
-  background-color: var(--bg-base);
+  background-color: var(--bg-surface);
   padding: 20px;
 }
 
@@ -403,10 +500,11 @@ select:focus-visible {
   border-collapse: collapse;
   text-align: left;
   font-size: 0.88rem;
+  background-color: var(--bg-surface);
 }
 
 .tech-table th {
-  background-color: rgba(138, 143, 146, 0.05);
+  background-color: var(--table-head-bg);
   padding: 12px 16px;
   font-family: var(--font-mono);
   font-size: 0.8rem;
@@ -423,7 +521,7 @@ select:focus-visible {
 }
 
 .tech-table tr:hover td {
-  background-color: rgba(138, 143, 146, 0.03);
+  background-color: var(--table-row-hover);
 }
 
 /* Form Elements */
@@ -442,7 +540,7 @@ select:focus-visible {
 .form-input, .form-select {
   width: 100%;
   max-width: 440px;
-  background-color: var(--bg-base);
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-strong);
   color: var(--text-primary);
   padding: 10px 12px;
@@ -536,10 +634,20 @@ select:focus-visible {
     flex-wrap: wrap;
   }
 
+  .public-navbar {
+    padding: 14px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .top-bar {
     padding: 14px 20px;
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .public-page-container {
+    padding: 24px 16px;
   }
 
   .page-container {
