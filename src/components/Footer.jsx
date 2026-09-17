@@ -10,13 +10,23 @@ export default function Footer() {
             <h5 style={{ fontSize: '0.95rem' }}>MEDGATE</h5>
             <p style={{ fontSize: '0.82rem', marginTop: '6px' }}>
               Zero-trust role-based access control and field-level redaction gateway
-              for electronic health records. Providing sub-millisecond access evaluation
-              and tamper-evident SHA-256 cryptographic audit guarantees.
+              for electronic health records. Clinical records modeled using the open-source
+              Synthea™ synthetic patient generator.
             </p>
-            <div style={{ marginTop: '12px' }}>
+            <div style={{ marginTop: '12px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <span className="status-badge granted" style={{ fontSize: '0.75rem' }}>
-                SHA-256 Chain Verified
+                SHA-256 Verified
               </span>
+              <a
+                href="https://synthea.mitre.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="status-badge neutral font-mono"
+                style={{ fontSize: '0.75rem' }}
+                title="Synthea Synthetic Patient Generator"
+              >
+                Synthea™ Dataset
+              </a>
             </div>
           </div>
 
@@ -37,6 +47,48 @@ export default function Footer() {
               <li><Link to="/terms">Least Privilege Access</Link></li>
               <li><a href="#integrity">Non-Repudiation Log</a></li>
               <li><a href="#simulator">Field Redaction Matrix</a></li>
+            </ul>
+          </div>
+
+          <div className="footer-col">
+            <h5>Source Code</h5>
+            <ul>
+              <li>
+                <a
+                  href="https://github.com/TeamShieldX/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  TeamShieldX Org
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/TeamShieldX/MedGate-Frontend"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Frontend Repo
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/TeamShieldX/MedGate-Backend"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Backend Repo
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/synthetichealth/synthea"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Synthea™ Source
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -74,10 +126,19 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <div>
-            &copy; {new Date().getFullYear()} MedGate Healthcare Systems. Team ShieldX. All rights reserved.
+            &copy; {new Date().getFullYear()} MedGate Healthcare Systems &bull;{' '}
+            <a
+              href="https://github.com/TeamShieldX/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--text-primary)', textDecoration: 'underline' }}
+            >
+              Team ShieldX
+            </a>
+            . All rights reserved.
           </div>
           <div className="font-mono" style={{ fontSize: '0.78rem' }}>
-            0.0343ms Mean Access Latency &bull; 29,154 Ops/Sec &bull; 44/44 Tests Pass
+            0.0343ms Mean Access Latency &bull; 29,154 Ops/Sec &bull; Synthea™ Clinical Graph
           </div>
         </div>
       </div>
