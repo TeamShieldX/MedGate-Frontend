@@ -360,7 +360,10 @@ export default function Layout() {
         <header className="top-bar">
           <div className="top-bar-main-row">
             <div className="top-bar-left">
-              <span className="system-title">MedGate Gateway Console</span>
+              <span className="system-title">
+                <span className="title-desktop">MedGate Gateway Console</span>
+                <span className="title-mobile">MedGate</span>
+              </span>
             </div>
 
             <div className="top-bar-right">
