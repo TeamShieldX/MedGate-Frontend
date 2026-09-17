@@ -338,14 +338,35 @@ select:focus-visible {
   top: 0;
   z-index: 100;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   padding: 16px 32px;
   border-bottom: 1px solid var(--border-subtle);
   background-color: var(--bg-surface);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+}
+
+.top-bar-main-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   gap: 16px;
+}
+
+.desktop-only-item {
+  display: inline-flex;
+}
+
+.top-bar-mobile-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding-top: 14px;
+  margin-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+  animation: fadeInMenu 0.15s ease-out;
 }
 
 .top-bar-left {
@@ -1202,20 +1223,64 @@ select:focus-visible {
   }
 
   .top-bar {
-    padding: 12px 18px;
+    padding: 10px 14px;
     flex-direction: column;
     align-items: stretch;
-    gap: 10px;
+    gap: 0;
   }
 
-  .top-bar-left,
-  .top-bar-right {
+  .top-bar-main-row {
     display: flex;
-    width: 100%;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .top-bar-left {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .top-bar-left .system-title {
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .desktop-only-item {
+    display: none !important;
+  }
+
+  .role-switcher-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .role-switcher-label {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+  }
+
+  .role-select {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    border: 1px solid var(--border-subtle);
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
   }
 
   .public-page-container {
