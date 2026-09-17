@@ -55,28 +55,28 @@ export default function DashboardOverviewPage() {
   const permissions = [
     {
       resource: 'Patient Demographics (Name, Phone, Address)',
-      status: isResearcher ? 'REDACTED' : 'GRANTED',
-      detail: isResearcher ? 'De-identified for research' : 'Visible for direct patient care'
+      status: isResearcher ? 'HIDDEN' : 'VISIBLE',
+      detail: isResearcher ? 'Hidden to protect patient privacy during research' : 'Visible so care providers can identify the patient'
     },
     {
       resource: 'Clinical Diagnoses & Vitals',
-      status: isReceptionist ? 'REDACTED' : 'GRANTED',
-      detail: isReceptionist ? 'Masked for scheduling role' : 'Clinical access authorized'
+      status: isReceptionist ? 'HIDDEN' : 'VISIBLE',
+      detail: isReceptionist ? 'Hidden from front-desk staff who only handle scheduling' : 'Visible for clinical staff providing treatment'
     },
     {
       resource: 'Confidential Clinician Notes',
-      status: (isDoctor || isAdmin) ? 'GRANTED' : 'REDACTED',
-      detail: (isDoctor || isAdmin) ? 'Full clinician narrative' : 'Restricted to primary physicians'
+      status: (isDoctor || isAdmin) ? 'VISIBLE' : 'HIDDEN',
+      detail: (isDoctor || isAdmin) ? 'Visible to doctors and administrators' : 'Hidden from non-physicians to protect sensitive psychiatric notes'
     },
     {
       resource: 'Medications & Prescriptions',
-      status: isReceptionist ? 'REDACTED' : 'GRANTED',
-      detail: isReceptionist ? 'Hidden for front-desk role' : 'Visible for treatment & care'
+      status: isReceptionist ? 'HIDDEN' : 'VISIBLE',
+      detail: isReceptionist ? 'Hidden from front-desk staff' : 'Visible for care and medication review'
     },
     {
       resource: 'SHA-256 Audit Trail & Ledger',
-      status: isAdmin ? 'GRANTED' : 'RESTRICTED',
-      detail: isAdmin ? 'Full cryptographic ledger review' : 'Restricted to Administrator'
+      status: isAdmin ? 'VISIBLE' : 'RESTRICTED',
+      detail: isAdmin ? 'Full access to inspect audit logs and prove no records were altered' : 'Restricted to Administrator role'
     }
   ];
 
@@ -224,7 +224,7 @@ export default function DashboardOverviewPage() {
                 <tr key={idx}>
                   <td><strong>{p.resource}</strong></td>
                   <td>
-                    <span className={`status-badge ${p.status === 'GRANTED' ? 'granted' : 'denied'}`}>
+                    <span className={`status-badge ${(p.status === 'VISIBLE' || p.status === 'GRANTED') ? 'granted' : 'denied'}`}>
                       {p.status}
                     </span>
                   </td>
