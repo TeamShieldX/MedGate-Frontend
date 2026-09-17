@@ -103,7 +103,7 @@ export default function PatientDetailView({ patient, role }) {
               ) : (
                 <RedactedField
                   fieldName="Patient Name"
-                  reason={isResearcher ? "Redacted for Researcher" : `Hidden for ${role}`}
+                  reason={isResearcher ? "Hidden — Researcher role" : `Hidden — ${role} role`}
                 />
               )}
             </h2>
@@ -132,7 +132,7 @@ export default function PatientDetailView({ patient, role }) {
             ) : (
               <RedactedField
                 fieldName="Phone"
-                reason={isResearcher ? "Redacted for Researcher" : `Hidden for ${role}`}
+                reason={isResearcher ? "Hidden — Researcher role" : `Hidden — ${role} role`}
               />
             )}
           </div>
@@ -144,7 +144,7 @@ export default function PatientDetailView({ patient, role }) {
             ) : (
               <RedactedField
                 fieldName="Address"
-                reason={isResearcher ? "Redacted for Researcher" : `Hidden for ${role}`}
+                reason={isResearcher ? "Hidden — Researcher role" : `Hidden — ${role} role`}
               />
             )}
           </div>
@@ -175,15 +175,7 @@ export default function PatientDetailView({ patient, role }) {
           <div>
             <RedactedField
               fieldName="Confidential Notes"
-              reason={
-                isNurse
-                  ? "Redacted for Nurse role"
-                  : isReceptionist
-                  ? "Hidden — Receptionist role"
-                  : isResearcher
-                  ? "Redacted for Researcher"
-                  : `Redacted for ${role}`
-              }
+              reason={`Hidden — ${role} role`}
             />
             <p style={{ marginTop: '8px', fontSize: '0.8rem' }}>
               Psychiatric evaluations and protected clinician notes are restricted to Doctor and Administrator roles.
@@ -435,7 +427,7 @@ export default function PatientDetailView({ patient, role }) {
         ) : (
           <RedactedField
             fieldName="Appointments"
-            reason="Redacted for Researcher"
+            reason="Hidden — Researcher role"
           />
         )}
       </div>
