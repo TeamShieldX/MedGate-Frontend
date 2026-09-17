@@ -84,31 +84,31 @@ export default function AuditLogTable({ logs = [] }) {
               <tr key={log.id || log.hash || Math.random()}>
                 <td
                   className="font-mono"
-                  style={{ whiteSpace: 'nowrap', fontSize: '0.82rem' }}
+                  style={{ whiteSpace: 'nowrap', minWidth: '96px', fontSize: '0.82rem' }}
                   title={log.timestamp || ''}
                 >
-                  <div style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                  <div style={{ fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
                     {formatRelativeTime(log.timestamp)}
                   </div>
-                  <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginTop: '2px', whiteSpace: 'nowrap' }}>
                     {log.timestamp ? log.timestamp.replace('T', ' ').substring(0, 19) : '—'}
                   </div>
                 </td>
-                <td className="font-mono">
+                <td className="font-mono" style={{ whiteSpace: 'nowrap' }}>
                   {log.role || log.actorRole || 'System'}
                 </td>
-                <td className="font-mono">
+                <td className="font-mono" style={{ whiteSpace: 'nowrap' }}>
                   {log.action}
                 </td>
-                <td className="font-mono" style={{ color: 'var(--text-secondary)' }}>
+                <td className="font-mono" style={{ color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
                   {log.resource}
                 </td>
-                <td>
+                <td style={{ whiteSpace: 'nowrap' }}>
                   <span className={`status-badge ${isGranted ? 'granted' : 'denied'}`}>
                     {log.result}
                   </span>
                 </td>
-                <td style={{ maxWidth: '280px', fontSize: '0.82rem' }}>
+                <td style={{ minWidth: '220px', maxWidth: '380px', fontSize: '0.82rem' }}>
                   {log.reason}
                 </td>
                 <td className="font-mono" style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }} title={log.hash}>
