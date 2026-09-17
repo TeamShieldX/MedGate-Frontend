@@ -1,17 +1,99 @@
 import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
 import RoleSwitcher from './RoleSwitcher';
+import ThemeToggle from './ThemeToggle';
 import { useAuth } from '../context/AuthContext';
 
 export default function Layout() {
-  const { currentRole } = useAuth();
+  const { currentRole, isLoggedIn, logout } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
+  const isPublicPage = location.pathname === '/' || location.pathname === '/login';
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  // Public Navbar Layout (for Landing Page and Login Page)
+  if (isPublicPage) {
+    return (
+      <div className="public-shell">
+        <header className="public-navbar">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              <span className="brand-title">MEDGATE</span>
+            </Link>
+
+            <nav className="public-nav-links" aria-label="Public navigation">
+              <NavLink
+                to="/"
+                end
+                className={({ isActive }) => `public-nav-link ${isActive ? 'active' : ''}`}
+              >
+                Overview
+              </NavLink>
+
+              <NavLink
+                to="/patients"
+                className={({ isActive }) => `public-nav-link ${isActive ? 'active' : ''}`}
+              >
+                Patients
+              </NavLink>
+
+              <NavLink
+                to="/audit-log"
+                className={({ isActive }) => `public-nav-link ${isActive ? 'active' : ''}`}
+              >
+                Audit Log
+              </NavLink>
+            </nav>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            {/* Show Role Switcher only when logged in */}
+            {isLoggedIn && <RoleSwitcher />}
+
+            <ThemeToggle />
+
+            {isLoggedIn ? (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="btn-secondary"
+                style={{ padding: '6px 12px', fontSize: '0.82rem' }}
+              >
+                Log out
+              </button>
+            ) : location.pathname !== '/login' ? (
+              <Link
+                to="/login"
+                className="btn-primary"
+                style={{ padding: '6px 14px', fontSize: '0.84rem' }}
+              >
+                Login
+              </Link>
+            ) : null}
+          </div>
+        </header>
+
+        <main className="public-page-container">
+          <Outlet />
+        </main>
+      </div>
+    );
+  }
+
+  // Authenticated App Shell with Sidebar (for Patients, Patient Detail, and Audit Log)
   return (
     <div className="app-shell">
       {/* Sidebar Navigation */}
       <aside className="sidebar">
         <div className="brand-header">
-          <div className="brand-title">MEDGATE</div>
+          <Link to="/" style={{ textDecoration: 'none' }}>
+            <div className="brand-title">MEDGATE</div>
+          </Link>
           <div className="brand-subtitle">Zero-Trust EHR Gateway</div>
         </div>
 
@@ -42,15 +124,25 @@ export default function Layout() {
             to="/login"
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
-            Login / Auth
+            {isLoggedIn ? 'Session Auth' : 'Login'}
           </NavLink>
         </nav>
 
         <div className="sidebar-footer">
-          <div className="security-indicator">
-            Active role: <strong>{currentRole}</strong>
-            <span>Least-privilege RBAC active</span>
-          </div>
+          {isLoggedIn ? (
+            <div className="security-indicator">
+              Active role: <strong>{currentRole}</strong>
+              <span>Least-privilege RBAC active</span>
+            </div>
+          ) : (
+            <div className="security-indicator">
+              Session: <strong>Unauthenticated</strong>
+              <Link to="/login" style={{ color: 'var(--status-granted)', textDecoration: 'underline' }}>
+                Log in to authenticate
+              </Link>
+            </div>
+          )}
+
           <div className="security-indicator">
             <span>Audit integrity: </span>
             <span style={{ color: 'var(--status-granted)' }}>SHA-256 chained</span>
@@ -66,7 +158,31 @@ export default function Layout() {
           </div>
 
           <div className="top-bar-right">
-            <RoleSwitcher />
+            {/* Show Role Switcher ONLY if logged in */}
+            {isLoggedIn ? (
+              <RoleSwitcher />
+            ) : (
+              <Link
+                to="/login"
+                className="btn-secondary"
+                style={{ padding: '4px 10px', fontSize: '0.78rem' }}
+              >
+                Log in to select role
+              </Link>
+            )}
+
+            <ThemeToggle />
+
+            {isLoggedIn && (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="btn-text"
+                title="Log out of current session"
+              >
+                Log out
+              </button>
+            )}
           </div>
         </header>
 
