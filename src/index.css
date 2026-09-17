@@ -251,6 +251,15 @@ select:focus-visible {
   letter-spacing: 0.05em;
 }
 
+.brand-logo-img {
+  height: 28px;
+  width: 28px;
+  border-radius: 4px;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+}
+
 .brand-subtitle {
   font-size: 0.8rem;
   color: var(--text-secondary);
