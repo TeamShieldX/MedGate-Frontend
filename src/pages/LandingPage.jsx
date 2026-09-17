@@ -7,6 +7,7 @@ export default function LandingPage() {
   const { startDemoSession } = useAuth();
   const navigate = useNavigate();
   const [simulatorRole, setSimulatorRole] = useState('Researcher');
+  const [showDevView, setShowDevView] = useState(false);
 
   const handleScrollToSimulator = () => {
     const el = document.getElementById('simulator');
@@ -46,8 +47,8 @@ export default function LandingPage() {
       json.phone = samplePatient.phone;
       json.address = samplePatient.address;
     } else {
-      json.name = "[REDACTED_FOR_RESEARCHER]";
-      json.contact = "[REDACTED_FOR_RESEARCHER]";
+      json.name = "[HIDDEN_RESEARCHER_ROLE]";
+      json.contact = "[HIDDEN_RESEARCHER_ROLE]";
     }
 
     if (!isReceptionist) {
@@ -62,13 +63,13 @@ export default function LandingPage() {
     if (isDoctor || isAdmin) {
       json.confidentialNotes = samplePatient.confidentialNotes;
     } else {
-      json.confidentialNotes = `[REDACTED_FOR_${simulatorRole.toUpperCase()}]`;
+      json.confidentialNotes = `[HIDDEN_${simulatorRole.toUpperCase()}_ROLE]`;
     }
 
     if (!isResearcher) {
       json.appointments = samplePatient.appointments;
     } else {
-      json.appointments = "[REDACTED_FOR_RESEARCHER]";
+      json.appointments = "[HIDDEN_RESEARCHER_ROLE]";
     }
 
     return JSON.stringify(json, null, 2);
@@ -106,31 +107,29 @@ export default function LandingPage() {
         </h1>
 
         <p className="hero-lead">
-          MedGate is a zero-trust electronic health records gateway providing runtime
-          role-based access control, dynamic field-level data redaction, and an append-only
-          SHA-256 cryptographic audit ledger.
+          MedGate checks every single time someone looks at a patient record, makes sure they're only shown what their role allows, and keeps a permanent record of every attempt. Nothing can be quietly changed or deleted afterward.
         </p>
 
         {/* Real Benchmark Strip */}
         <div className="metric-strip" aria-label="System verification benchmarks">
           <div className="metric-cell">
             <span className="metric-number">0.0343ms</span>
-            <span className="metric-label">average access check latency</span>
+            <span className="metric-label">how long it takes to check if you're allowed to see something</span>
           </div>
 
           <div className="metric-cell">
             <span className="metric-number">29,154</span>
-            <span className="metric-label">operations / second</span>
+            <span className="metric-label">access checks the system can handle per second</span>
           </div>
 
           <div className="metric-cell">
             <span className="metric-number">44/44</span>
-            <span className="metric-label">automated tests passing</span>
+            <span className="metric-label">every automated test passes</span>
           </div>
 
           <div className="metric-cell">
             <span className="metric-number">SHA-256</span>
-            <span className="metric-label">hash-chained audit ledger</span>
+            <span className="metric-label">the record of every access can't be secretly edited</span>
           </div>
         </div>
 
@@ -170,9 +169,9 @@ export default function LandingPage() {
       <section id="simulator" className="tech-box">
         <div className="tech-box-header">
           <div>
-            <h2>Interactive RBAC policy simulator</h2>
+            <h2>See what each role can actually see</h2>
             <p style={{ fontSize: '0.86rem', marginTop: '4px' }}>
-              Select a workforce role to inspect runtime field stripping and visible redaction placeholders in real time:
+              Pick a role below and see exactly what that person would see when they open a patient's file, and what's hidden from them, and why.
             </p>
           </div>
           <span className="status-badge neutral font-mono">
@@ -196,109 +195,114 @@ export default function LandingPage() {
           ))}
         </div>
 
-        {/* Split Screen Simulator Console */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px', marginTop: '16px' }}>
-          {/* Left Pane: Rendered UI Card */}
-          <div style={{ border: '1px solid var(--border-subtle)', padding: '20px', backgroundColor: 'var(--bg-surface)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '14px', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '8px' }}>
-              <span className="font-mono" style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-                Client Render: {simulatorRole}
-              </span>
-              <span className="status-badge granted">gated runtime</span>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.88rem' }}>
-              <div>
-                <span style={{ color: 'var(--text-secondary)' }}>Patient Name: </span>
-                {!isResearcher ? (
-                  <strong>{samplePatient.firstName} {samplePatient.lastName}</strong>
-                ) : (
-                  <RedactedField fieldName="Name" reason="Redacted for Researcher" />
-                )}
-              </div>
-
-              <div>
-                <span style={{ color: 'var(--text-secondary)' }}>Phone / Contact: </span>
-                {!isResearcher ? (
-                  <span className="font-mono">{samplePatient.phone}</span>
-                ) : (
-                  <RedactedField fieldName="Contact PII" reason="Redacted for Researcher" />
-                )}
-              </div>
-
-              <div>
-                <span style={{ color: 'var(--text-secondary)' }}>Primary Condition: </span>
-                {!isReceptionist ? (
-                  <span>{samplePatient.primaryCondition}</span>
-                ) : (
-                  <RedactedField fieldName="Condition" reason="Hidden — Receptionist role" />
-                )}
-              </div>
-
-              <div>
-                <span style={{ color: 'var(--text-secondary)' }}>Confidential Notes: </span>
-                {isDoctor || isAdmin ? (
-                  <span style={{ color: 'var(--text-primary)' }}>{samplePatient.confidentialNotes}</span>
-                ) : (
-                  <RedactedField
-                    fieldName="Confidential Notes"
-                    reason={
-                      isNurse
-                        ? "Redacted for Nurse role"
-                        : isReceptionist
-                        ? "Hidden — Receptionist role"
-                        : "Redacted for Researcher"
-                    }
-                  />
-                )}
-              </div>
-
-              <div>
-                <span style={{ color: 'var(--text-secondary)' }}>Active Medications: </span>
-                {!isReceptionist ? (
-                  <span className="font-mono" style={{ fontSize: '0.82rem' }}>
-                    {samplePatient.medications.join(', ')}
-                  </span>
-                ) : (
-                  <RedactedField fieldName="Prescriptions" reason="Hidden — Receptionist role" />
-                )}
-              </div>
-
-              <div>
-                <span style={{ color: 'var(--text-secondary)' }}>Audit Log Access: </span>
-                {isAdmin ? (
-                  <span className="status-badge granted">Granted (200 OK)</span>
-                ) : (
-                  <span className="status-badge denied">Denied (403 Forbidden)</span>
-                )}
-              </div>
-            </div>
+        {/* Plain-Language Simulator UI Card */}
+        <div style={{ border: '1px solid var(--border-subtle)', padding: '20px', backgroundColor: 'var(--bg-surface)', marginTop: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '14px', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '8px' }}>
+            <span className="font-mono" style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+              Active View: {simulatorRole}
+            </span>
+            <span className="status-badge granted">gated runtime</span>
           </div>
 
-          {/* Right Pane: API Inspector & JSON Terminal */}
-          <div className="terminal-box">
-            <div className="terminal-header">
-              <span>GATEWAY HTTP INSPECTOR</span>
-              <span style={{ color: 'var(--status-granted)' }}>HTTP/1.1 200 OK</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.88rem' }}>
+            <div>
+              <span style={{ color: 'var(--text-secondary)' }}>Patient Name: </span>
+              {!isResearcher ? (
+                <strong>{samplePatient.firstName} {samplePatient.lastName}</strong>
+              ) : (
+                <RedactedField fieldName="Name" reason="Hidden — Researcher role" />
+              )}
             </div>
-            <div style={{ color: 'var(--text-secondary)', marginBottom: '8px', fontSize: '0.78rem' }}>
-              &gt; GET /patients/pat-901-syn<br />
-              &gt; Host: medgatebackend.onrender.com<br />
-              &gt; x-user-role: <span style={{ color: 'var(--text-primary)' }}>{simulatorRole}</span><br />
-              &gt; x-access-check: <span style={{ color: 'var(--status-granted)' }}>0.0343ms</span>
+
+            <div>
+              <span style={{ color: 'var(--text-secondary)' }}>Phone / Contact: </span>
+              {!isResearcher ? (
+                <span className="font-mono">{samplePatient.phone}</span>
+              ) : (
+                <RedactedField fieldName="Contact Details" reason="Hidden — Researcher role" />
+              )}
             </div>
-            <pre style={{ color: 'var(--text-primary)', fontSize: '0.78rem', overflowX: 'auto', margin: 0 }}>
-              {getFilteredJson()}
-            </pre>
+
+            <div>
+              <span style={{ color: 'var(--text-secondary)' }}>Primary Condition: </span>
+              {!isReceptionist ? (
+                <span>{samplePatient.primaryCondition}</span>
+              ) : (
+                <RedactedField fieldName="Condition" reason="Hidden — Receptionist role" />
+              )}
+            </div>
+
+            <div>
+              <span style={{ color: 'var(--text-secondary)' }}>Confidential Notes: </span>
+              {isDoctor || isAdmin ? (
+                <span style={{ color: 'var(--text-primary)' }}>{samplePatient.confidentialNotes}</span>
+              ) : (
+                <RedactedField
+                  fieldName="Confidential Notes"
+                  reason={`Hidden — ${simulatorRole} role`}
+                />
+              )}
+            </div>
+
+            <div>
+              <span style={{ color: 'var(--text-secondary)' }}>Active Medications: </span>
+              {!isReceptionist ? (
+                <span className="font-mono" style={{ fontSize: '0.82rem' }}>
+                  {samplePatient.medications.join(', ')}
+                </span>
+              ) : (
+                <RedactedField fieldName="Prescriptions" reason="Hidden — Receptionist role" />
+              )}
+            </div>
+
+            <div>
+              <span style={{ color: 'var(--text-secondary)' }}>Audit Log Access: </span>
+              {isAdmin ? (
+                <span className="status-badge granted">Granted (200 OK)</span>
+              ) : (
+                <span className="status-badge denied">Denied (403 Forbidden)</span>
+              )}
+            </div>
           </div>
+        </div>
+
+        {/* Collapsible Developer View: Gateway HTTP Inspector */}
+        <div style={{ marginTop: '16px' }}>
+          <button
+            type="button"
+            onClick={() => setShowDevView(!showDevView)}
+            className="btn-secondary"
+            style={{ fontSize: '0.82rem', padding: '6px 14px', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
+          >
+            <span>View raw API response (developer view)</span>
+            <span style={{ fontSize: '0.72rem' }}>{showDevView ? '▲' : '▼'}</span>
+          </button>
+
+          {showDevView && (
+            <div className="terminal-box" style={{ marginTop: '12px' }}>
+              <div className="terminal-header">
+                <span>GATEWAY HTTP INSPECTOR</span>
+                <span style={{ color: 'var(--status-granted)' }}>HTTP/1.1 200 OK</span>
+              </div>
+              <div style={{ color: 'var(--text-secondary)', marginBottom: '8px', fontSize: '0.78rem' }}>
+                &gt; GET /patients/pat-901-syn<br />
+                &gt; Host: medgatebackend.onrender.com<br />
+                &gt; x-user-role: <span style={{ color: 'var(--text-primary)' }}>{simulatorRole}</span><br />
+                &gt; x-access-check: <span style={{ color: 'var(--status-granted)' }}>0.0343ms</span>
+              </div>
+              <pre style={{ color: 'var(--text-primary)', fontSize: '0.78rem', overflowX: 'auto', margin: 0 }}>
+                {getFilteredJson()}
+              </pre>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Architectural Pipeline Deep Dive */}
+      {/* Architectural Pipeline Section */}
       <section id="architecture" className="tech-box">
         <div className="tech-box-header">
           <div>
-            <h2>Zero-trust architectural pipeline</h2>
+            <h2>How MedGate protects a record, step by step</h2>
             <p style={{ fontSize: '0.86rem', marginTop: '4px' }}>
               How MedGate mediates every request between client and database layer
             </p>
@@ -311,47 +315,35 @@ export default function LandingPage() {
         <div className="pipeline-grid">
           <div className="pipeline-card">
             <span className="pipeline-step">01 &bull; Ingestion & Identity</span>
-            <h4>Zero-Trust Gateway Interceptor</h4>
+            <h4>Every request is checked first</h4>
             <p>
-              Inspects cryptographic session tokens and header role assertions on every incoming HTTP call.
-              Applies default-deny validation before routing to domain handlers.
+              Before anyone sees any data, MedGate verifies who they are and what role they hold. No exceptions.
             </p>
           </div>
 
           <div className="pipeline-card">
             <span className="pipeline-step">02 &bull; Decision Engine</span>
-            <h4>Dynamic Field Redaction</h4>
+            <h4>Each role sees only its share</h4>
             <p>
-              In-memory Least Privilege filtering evaluates role against the field permission matrix in 0.0343ms.
-              Strips unauthorized keys before responses leave gateway memory.
+              A receptionist sees appointment details. A doctor sees the full clinical picture. The system decides this in under half a millisecond.
             </p>
           </div>
 
           <div className="pipeline-card">
             <span className="pipeline-step">03 &bull; Cryptographic Non-Repudiation</span>
-            <h4>SHA-256 Chained Audit Trail</h4>
+            <h4>Every access is written down, permanently</h4>
             <p>
-              Synchronously hashes every granted and denied access event into the append-only ledger.
-              Guarantees retroactive tamper detection across all historical entries.
+              Granted or denied, every attempt is logged in a way that can't be secretly altered. If a record is tampered with, it's immediately detectable.
             </p>
           </div>
         </div>
       </section>
 
-      {/* The Blanket Access Problem vs Zero-Trust Approach */}
+      {/* Problem / Context Section */}
       <section id="problem" className="tech-box">
         <h2 style={{ marginBottom: '14px' }}>The security flaw of conventional EHR systems</h2>
         <p style={{ marginBottom: '16px' }}>
-          Conventional Electronic Health Record (EHR) platforms grant broad, monolithic access once a user session
-          is established. A receptionist scheduling a visit often sees complete psychiatric notes, oncology reports,
-          and clinical summaries. Conversely, external analytics researchers frequently receive unmasked demographic
-          identities alongside medical telemetry. This structural over-privilege drives regulatory penalties,
-          data leaks, and insider threats.
-        </p>
-        <p>
-          MedGate eliminates blanket access by gating every field request through a zero-trust least-privilege engine.
-          Access permissions are evaluated at runtime per role, sensitive fields are redacted before transmission,
-          and every single access decision (granted or denied) is immutably logged into a cryptographic ledger.
+          Most systems work on an all-or-nothing basis: once someone is logged in, they can see everything. A receptionist scheduling an appointment can often see the same clinical notes as a doctor. A researcher pulling statistics can often see a patient's name and contact details, when they only need the medical data. MedGate closes this gap. Every piece of information is shown or hidden based on who's asking, every single time.
         </p>
       </section>
 
