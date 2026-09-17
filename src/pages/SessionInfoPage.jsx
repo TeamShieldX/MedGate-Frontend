@@ -26,7 +26,7 @@ export default function SessionInfoPage() {
           </div>
           <h1>Security Session Information</h1>
           <p style={{ marginTop: '4px', fontSize: '0.92rem' }}>
-            Zero-trust session claims and runtime gateway parameters.
+            Details about your currently signed-in user identity, active role permissions, and underlying gateway session token.
           </p>
         </div>
 
