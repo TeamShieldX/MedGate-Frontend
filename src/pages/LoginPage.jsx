@@ -49,16 +49,16 @@ export default function LoginPage() {
             rel="noopener noreferrer"
             className="hackathon-hero-badge"
             style={{ padding: '3px 8px' }}
-            title="NITDA International Cybersecurity Hackathon"
+            title="Built for the NITDA International Cybersecurity Hackathon (ICSC)"
           >
+            <span className="hackathon-badge-prefix" style={{ fontSize: '0.72rem' }}>Built for</span>
             <img
               src="/icschack.png"
-              alt="NITDA International Cybersecurity Hackathon"
-              style={{ height: '16px', width: 'auto', display: 'block' }}
+              alt="ICSC"
+              className="hackathon-hero-img"
+              style={{ height: '16px' }}
             />
-            <span style={{ fontSize: '0.72rem', color: '#EDEFEE', fontFamily: 'var(--font-mono)' }}>
-              ICSC Hack
-            </span>
+            <span className="hackathon-badge-suffix" style={{ fontSize: '0.72rem' }}>Hackathon</span>
           </a>
         </div>
 
