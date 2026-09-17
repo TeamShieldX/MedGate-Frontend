@@ -1,91 +1,78 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import RoleSwitcher from './RoleSwitcher';
+import { useAuth } from '../context/AuthContext';
 
 export default function Layout() {
+  const { currentRole } = useAuth();
+
   return (
-    <div className="app-layout">
-      
-      {/* Sidebar */}
+    <div className="app-shell">
+      {/* Sidebar Navigation */}
       <aside className="sidebar">
-        <div className="brand">
-          <div className="brand-icon">M</div>
-
-          <div>
-            <h2>MedGate</h2>
-            <span>Healthcare Portal</span>
-          </div>
+        <div className="brand-header">
+          <div className="brand-title">MEDGATE</div>
+          <div className="brand-subtitle">Zero-Trust EHR Gateway</div>
         </div>
 
-        <div className="sidebar-section">
-          <p className="sidebar-label">MAIN MENU</p>
-
-          <nav className="sidebar-nav">
-            <NavLink
-              to="/patients"
-              className={({ isActive }) =>
-                `sidebar-link ${isActive ? 'active' : ''}`
-              }
-            >
-              <span className="nav-icon">▣</span>
-              <span>Patients</span>
-            </NavLink>
-
-            <NavLink
-              to="/audit-log"
-              className={({ isActive }) =>
-                `sidebar-link ${isActive ? 'active' : ''}`
-              }
-            >
-              <span className="nav-icon">◷</span>
-              <span>Audit Log</span>
-            </NavLink>
-          </nav>
-        </div>
-
-        <div className="sidebar-bottom">
+        <nav className="nav-group" aria-label="System navigation">
           <NavLink
-            to="/login"
-            className={({ isActive }) =>
-              `sidebar-link ${isActive ? 'active' : ''}`
-            }
+            to="/"
+            end
+            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
-            <span className="nav-icon">⇥</span>
-            <span>Login</span>
+            Overview
           </NavLink>
 
-          <div className="security-note">
-            <span className="security-icon">✓</span>
+          <NavLink
+            to="/patients"
+            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          >
+            Patients
+          </NavLink>
 
-            <div>
-              <strong>Secure Access</strong>
-              <small>Role-based protection</small>
-            </div>
+          <NavLink
+            to="/audit-log"
+            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          >
+            Audit Log
+          </NavLink>
+
+          <NavLink
+            to="/login"
+            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          >
+            Login / Auth
+          </NavLink>
+        </nav>
+
+        <div className="sidebar-footer">
+          <div className="security-indicator">
+            Active role: <strong>{currentRole}</strong>
+            <span>Least-privilege RBAC active</span>
+          </div>
+          <div className="security-indicator">
+            <span>Audit integrity: </span>
+            <span style={{ color: 'var(--status-granted)' }}>SHA-256 chained</span>
           </div>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <div className="main-area">
-
-        {/* Top Header */}
-        <header className="topbar">
-          <div>
-            <p className="topbar-label">MEDICAL RECORD SYSTEM</p>
-            <h1>MedGate Portal</h1>
+      {/* Main Content Area */}
+      <div className="main-content">
+        <header className="top-bar">
+          <div className="top-bar-left">
+            <span className="system-title">MedGate Gateway Console</span>
           </div>
 
-          <div className="role-area">
-            <span className="role-label">Active Role</span>
+          <div className="top-bar-right">
             <RoleSwitcher />
           </div>
         </header>
 
-        {/* Current Page */}
-        <main className="page-content">
+        <main className="page-container">
           <Outlet />
         </main>
-
       </div>
     </div>
   );
