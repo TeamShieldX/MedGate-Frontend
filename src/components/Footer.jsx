@@ -2,6 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Footer() {
+  const handleNavClick = (targetPath, targetHash) => {
+    if (window.location.pathname === targetPath && targetHash) {
+      const el = document.getElementById(targetHash);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
+
   return (
     <footer className="public-footer-wrapper">
       <div className="public-footer">
@@ -33,20 +42,52 @@ export default function Footer() {
           <div className="footer-col">
             <h5>Architecture</h5>
             <ul>
-              <li><a href="#overview">Gateway Overview</a></li>
-              <li><a href="#simulator">RBAC Simulator</a></li>
-              <li><a href="#benchmarks">Latency Benchmarks</a></li>
-              <li><a href="#integrity">Audit Hash Chain</a></li>
+              <li>
+                <Link to="/#overview" onClick={() => handleNavClick('/', 'overview')}>
+                  Gateway Overview
+                </Link>
+              </li>
+              <li>
+                <Link to="/#simulator" onClick={() => handleNavClick('/', 'simulator')}>
+                  RBAC Simulator
+                </Link>
+              </li>
+              <li>
+                <Link to="/#benchmarks" onClick={() => handleNavClick('/', 'benchmarks')}>
+                  Latency Benchmarks
+                </Link>
+              </li>
+              <li>
+                <Link to="/#integrity" onClick={() => handleNavClick('/', 'integrity')}>
+                  Audit Hash Chain
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div className="footer-col">
             <h5>Compliance</h5>
             <ul>
-              <li><Link to="/privacy">HIPAA § 164.312</Link></li>
-              <li><Link to="/terms">Least Privilege Access</Link></li>
-              <li><a href="#integrity">Non-Repudiation Log</a></li>
-              <li><a href="#simulator">Field Redaction Matrix</a></li>
+              <li>
+                <Link to="/privacy#hipaa" onClick={() => handleNavClick('/privacy', 'hipaa')}>
+                  HIPAA § 164.312
+                </Link>
+              </li>
+              <li>
+                <Link to="/terms#least-privilege" onClick={() => handleNavClick('/terms', 'least-privilege')}>
+                  Least Privilege Access
+                </Link>
+              </li>
+              <li>
+                <Link to="/#integrity" onClick={() => handleNavClick('/', 'integrity')}>
+                  Non-Repudiation Log
+                </Link>
+              </li>
+              <li>
+                <Link to="/#simulator" onClick={() => handleNavClick('/', 'simulator')}>
+                  Field Redaction Matrix
+                </Link>
+              </li>
             </ul>
           </div>
 
