@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 
 function formatRelativeTime(timestamp) {
   if (!timestamp) return '—';
@@ -35,6 +35,16 @@ function formatRelativeTime(timestamp) {
 }
 
 export default function AuditLogTable({ logs = [] }) {
+  const [sortOrder, setSortOrder] = useState('desc'); // default: latest first
+
+  const sortedLogs = useMemo(() => {
+    return [...logs].sort((a, b) => {
+      const timeA = new Date(a.timestamp || 0).getTime();
+      const timeB = new Date(b.timestamp || 0).getTime();
+      return sortOrder === 'desc' ? timeB - timeA : timeA - timeB;
+    });
+  }, [logs, sortOrder]);
+
   if (!logs || logs.length === 0) {
     return (
       <div className="tech-box">
@@ -48,7 +58,13 @@ export default function AuditLogTable({ logs = [] }) {
       <table className="tech-table">
         <thead>
           <tr>
-            <th>Timestamp</th>
+            <th
+              style={{ cursor: 'pointer', userSelect: 'none' }}
+              onClick={() => setSortOrder(prev => prev === 'desc' ? 'asc' : 'desc')}
+              title="Click to toggle chronological sort order"
+            >
+              Timestamp {sortOrder === 'desc' ? '▼ (Latest first)' : '▲ (Oldest first)'}
+            </th>
             <th>Role</th>
             <th>Action</th>
             <th>Resource</th>
@@ -58,7 +74,7 @@ export default function AuditLogTable({ logs = [] }) {
           </tr>
         </thead>
         <tbody>
-          {logs.map((log) => {
+          {sortedLogs.map((log) => {
             const isGranted = (log.result || '').toUpperCase() === 'GRANTED';
             const shortHash = log.hash
               ? `${log.hash.substring(0, 8)}...${log.hash.substring(log.hash.length - 6)}`
@@ -69,9 +85,14 @@ export default function AuditLogTable({ logs = [] }) {
                 <td
                   className="font-mono"
                   style={{ whiteSpace: 'nowrap', fontSize: '0.82rem' }}
-                  title={log.timestamp ? log.timestamp.replace('T', ' ').substring(0, 19) : ''}
+                  title={log.timestamp || ''}
                 >
-                  {formatRelativeTime(log.timestamp)}
+                  <div style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                    {formatRelativeTime(log.timestamp)}
+                  </div>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                    {log.timestamp ? log.timestamp.replace('T', ' ').substring(0, 19) : '—'}
+                  </div>
                 </td>
                 <td className="font-mono">
                   {log.role || log.actorRole || 'System'}
