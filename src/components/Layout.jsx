@@ -64,6 +64,7 @@ export default function Layout() {
               </Link>
 
               <div className="mobile-header-actions">
+                {isLoggedIn && <RoleSwitcher />}
                 <ThemeToggle />
                 <HamburgerToggle
                   isOpen={mobileMenuOpen}
@@ -185,10 +186,6 @@ export default function Layout() {
                       <span className="user-welcome-badge">
                         Welcome, <strong>{usernameDisplay}</strong>
                       </span>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>Role:</span>
-                        <RoleSwitcher />
-                      </div>
                       <button
                         type="button"
                         onClick={() => {
@@ -239,15 +236,14 @@ export default function Layout() {
     );
   }
 
-  // Authenticated App Shell with Sidebar (Patients, Patient Detail, Audit Log, Overview, Session)
+  // Authenticated App Shell with Desktop Sidebar & Mobile Top Bar Drawer
   return (
     <div className="app-shell">
-      {/* Sidebar Navigation */}
-      <aside className={`sidebar ${mobileMenuOpen ? 'mobile-open' : 'mobile-closed'}`}>
+      {/* Desktop Sidebar Navigation */}
+      <aside className="sidebar">
         <div className="brand-header">
           <Link
             to="/"
-            onClick={() => setMobileMenuOpen(false)}
             style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}
           >
             <img src="/logo.jpg" alt="MedGate Logo" className="brand-logo-img" />
@@ -262,7 +258,6 @@ export default function Layout() {
           <NavLink
             to={isLoggedIn ? "/overview" : "/"}
             end
-            onClick={() => setMobileMenuOpen(false)}
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
             Overview
@@ -270,7 +265,6 @@ export default function Layout() {
 
           <NavLink
             to="/patients"
-            onClick={() => setMobileMenuOpen(false)}
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
             Patients
@@ -278,7 +272,6 @@ export default function Layout() {
 
           <NavLink
             to="/audit-log"
-            onClick={() => setMobileMenuOpen(false)}
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
             Audit Log
@@ -286,7 +279,6 @@ export default function Layout() {
 
           <NavLink
             to={isLoggedIn ? "/session" : "/login"}
-            onClick={() => setMobileMenuOpen(false)}
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
             {isLoggedIn ? 'Session Info' : 'Login'}
@@ -304,7 +296,6 @@ export default function Layout() {
               Session: <strong>Unauthenticated</strong>
               <Link
                 to="/login"
-                onClick={() => setMobileMenuOpen(false)}
                 style={{ color: 'var(--status-granted)', textDecoration: 'underline' }}
               >
                 Log in to authenticate
@@ -318,9 +309,9 @@ export default function Layout() {
           </div>
 
           <div style={{ marginTop: '8px', fontSize: '0.74rem', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            <Link to="/terms" onClick={() => setMobileMenuOpen(false)} style={{ color: 'var(--text-secondary)' }}>Terms</Link>
+            <Link to="/terms" style={{ color: 'var(--text-secondary)' }}>Terms</Link>
             <span style={{ color: 'var(--border-strong)' }}>•</span>
-            <Link to="/privacy" onClick={() => setMobileMenuOpen(false)} style={{ color: 'var(--text-secondary)' }}>Privacy</Link>
+            <Link to="/privacy" style={{ color: 'var(--text-secondary)' }}>Privacy</Link>
             <span style={{ color: 'var(--border-strong)' }}>•</span>
             <a
               href="https://github.com/TeamShieldX/MedGate-Frontend"
@@ -354,10 +345,7 @@ export default function Layout() {
           {isLoggedIn && (
             <button
               type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                handleLogout();
-              }}
+              onClick={handleLogout}
               className="btn-secondary sidebar-logout-btn"
               title="Log out of current session"
             >
@@ -370,48 +358,143 @@ export default function Layout() {
       {/* Main Content Area */}
       <div className="main-content">
         <header className="top-bar">
-          <div className="top-bar-left" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <HamburgerToggle
-              isOpen={mobileMenuOpen}
-              onClick={() => setMobileMenuOpen(prev => !prev)}
-              label="Toggle sidebar navigation drawer"
-            />
-            <span className="system-title">MedGate Gateway Console</span>
-          </div>
+          <div className="top-bar-main-row">
+            <div className="top-bar-left">
+              <span className="system-title">MedGate Gateway Console</span>
+            </div>
 
-          <div className="top-bar-right">
-            {!isLoggedIn && (
-              <a
-                href="https://github.com/TeamShieldX/MedGate-Frontend"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="theme-toggle-btn"
-                title="View on GitHub"
-              >
-                GitHub
-              </a>
-            )}
-
-            {/* When logged in: show Welcome [user], RoleSwitcher */}
-            {isLoggedIn ? (
-              <>
-                <span className="user-welcome-badge">
+            <div className="top-bar-right">
+              {/* Desktop-only welcome badge */}
+              {isLoggedIn && (
+                <span className="user-welcome-badge desktop-only-item">
                   Welcome, <strong>{usernameDisplay}</strong>
                 </span>
-                <RoleSwitcher />
-              </>
-            ) : (
-              <Link
-                to="/login"
-                className="btn-secondary"
-                style={{ padding: '4px 10px', fontSize: '0.78rem' }}
-              >
-                Log in to select role
-              </Link>
-            )}
+              )}
 
-            <ThemeToggle />
+              {/* Role selector always in view */}
+              {isLoggedIn ? (
+                <RoleSwitcher />
+              ) : (
+                <Link
+                  to="/login"
+                  className="btn-secondary desktop-only-item"
+                  style={{ padding: '4px 10px', fontSize: '0.78rem' }}
+                >
+                  Log in
+                </Link>
+              )}
+
+              {/* Theme toggle always in view */}
+              <ThemeToggle />
+
+              {/* Hamburger button on the FAR RIGHT */}
+              <HamburgerToggle
+                isOpen={mobileMenuOpen}
+                onClick={() => setMobileMenuOpen(prev => !prev)}
+                label="Toggle console navigation menu"
+              />
+            </div>
           </div>
+
+          {/* Authenticated Mobile Dropdown Menu right under top bar */}
+          {mobileMenuOpen && (
+            <div className="top-bar-mobile-menu">
+              {isLoggedIn && (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '10px', borderBottom: '1px solid var(--border-subtle)' }}>
+                  <span className="user-welcome-badge">
+                    Welcome, <strong>{usernameDisplay}</strong>
+                  </span>
+                  <span className="status-badge neutral font-mono" style={{ fontSize: '0.76rem' }}>
+                    {currentRole}
+                  </span>
+                </div>
+              )}
+
+              <nav style={{ display: 'flex', flexDirection: 'column', gap: '6px' }} aria-label="Mobile console navigation">
+                <NavLink
+                  to={isLoggedIn ? "/overview" : "/"}
+                  end
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+                >
+                  Overview
+                </NavLink>
+
+                <NavLink
+                  to="/patients"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+                >
+                  Patients
+                </NavLink>
+
+                <NavLink
+                  to="/audit-log"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+                >
+                  Audit Log
+                </NavLink>
+
+                <NavLink
+                  to={isLoggedIn ? "/session" : "/login"}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+                >
+                  {isLoggedIn ? 'Session Info' : 'Login'}
+                </NavLink>
+              </nav>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '10px', borderTop: '1px solid var(--border-subtle)' }}>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '0.76rem' }}>
+                  <Link to="/terms" onClick={() => setMobileMenuOpen(false)} style={{ color: 'var(--text-secondary)' }}>Terms</Link>
+                  <span style={{ color: 'var(--border-strong)' }}>•</span>
+                  <Link to="/privacy" onClick={() => setMobileMenuOpen(false)} style={{ color: 'var(--text-secondary)' }}>Privacy</Link>
+                  <span style={{ color: 'var(--border-strong)' }}>•</span>
+                  <a
+                    href="https://github.com/TeamShieldX/MedGate-Frontend"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: 'var(--text-secondary)' }}
+                  >
+                    GitHub
+                  </a>
+                </div>
+
+                <a
+                  href="https://nitda.gov.ng"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hackathon-hero-badge"
+                  style={{ padding: '4px 8px' }}
+                  title="Built for the NITDA International Cybersecurity Hackathon (ICSC)"
+                >
+                  <span className="hackathon-badge-prefix" style={{ fontSize: '0.72rem' }}>Built for</span>
+                  <img
+                    src="/icschack.png"
+                    alt="ICSC"
+                    className="hackathon-hero-img"
+                    style={{ height: '16px' }}
+                  />
+                  <span className="hackathon-badge-suffix" style={{ fontSize: '0.72rem' }}>Hackathon</span>
+                </a>
+
+                {isLoggedIn && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handleLogout();
+                    }}
+                    className="btn-secondary sidebar-logout-btn"
+                    style={{ width: '100%', marginTop: '4px' }}
+                  >
+                    Log out
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </header>
 
         <main className="page-container">
