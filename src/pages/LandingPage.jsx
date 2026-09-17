@@ -131,6 +131,15 @@ export default function LandingPage() {
           >
             Login
           </Link>
+          <a
+            href="https://github.com/TeamShieldX/MedGate-Frontend"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-secondary"
+            style={{ padding: '12px 24px', fontSize: '0.95rem' }}
+          >
+            GitHub
+          </a>
           <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginLeft: '8px' }}>
             5 workforce roles &bull; Live Neon PostgreSQL backend
           </span>
@@ -504,6 +513,94 @@ export default function LandingPage() {
             <p style={{ fontSize: '0.78rem', marginTop: '4px' }}>
               1,010 entries verified mathematically at ~5.1 microseconds per log block.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Synthea Synthetic Healthcare Data & Open Source Architecture */}
+      <section className="tech-box">
+        <div className="tech-box-header">
+          <div>
+            <h2>Synthea™ synthetic health records & open architecture</h2>
+            <p style={{ fontSize: '0.86rem', marginTop: '4px' }}>
+              Realistic clinical populations without privacy risk, powered by open-source tooling
+            </p>
+          </div>
+          <span className="status-badge granted font-mono">
+            MITRE Synthea™
+          </span>
+        </div>
+
+        <p style={{ marginBottom: '16px' }}>
+          MedGate's relational patient graphs—comprising encounters, diagnoses, medications, observations,
+          allergies, and appointments—are modeled on authentic clinical distributions from{' '}
+          <a
+            href="https://synthea.mitre.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'var(--text-primary)', textDecoration: 'underline' }}
+          >
+            Synthea™ Synthetic Patient Generator
+          </a>
+          . This ensures realistic epidemiological graphs and FHIR-aligned data structures without exposing real patient ePHI.
+        </p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginTop: '20px' }}>
+          <div style={{ border: '1px solid var(--border-subtle)', padding: '18px', backgroundColor: 'var(--code-bg)' }}>
+            <span className="font-mono" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block' }}>
+              Frontend Repository
+            </span>
+            <h4 style={{ margin: '6px 0 8px' }}>MedGate-Frontend</h4>
+            <p style={{ fontSize: '0.82rem', marginBottom: '12px' }}>
+              Vite + React zero-trust client with dynamic field-level redaction and role switcher.
+            </p>
+            <a
+              href="https://github.com/TeamShieldX/MedGate-Frontend"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary"
+              style={{ fontSize: '0.8rem', padding: '6px 12px' }}
+            >
+              View on GitHub
+            </a>
+          </div>
+
+          <div style={{ border: '1px solid var(--border-subtle)', padding: '18px', backgroundColor: 'var(--code-bg)' }}>
+            <span className="font-mono" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block' }}>
+              Backend Repository
+            </span>
+            <h4 style={{ margin: '6px 0 8px' }}>MedGate-Backend</h4>
+            <p style={{ fontSize: '0.82rem', marginBottom: '12px' }}>
+              Express + Neon PostgreSQL with SHA-256 tamper-evident hash-chain audit engine.
+            </p>
+            <a
+              href="https://github.com/TeamShieldX/MedGate-Backend"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary"
+              style={{ fontSize: '0.8rem', padding: '6px 12px' }}
+            >
+              View on GitHub
+            </a>
+          </div>
+
+          <div style={{ border: '1px solid var(--border-subtle)', padding: '18px', backgroundColor: 'var(--code-bg)' }}>
+            <span className="font-mono" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block' }}>
+              Organization
+            </span>
+            <h4 style={{ margin: '6px 0 8px' }}>Team ShieldX</h4>
+            <p style={{ fontSize: '0.82rem', marginBottom: '12px' }}>
+              Official cybersecurity team building zero-trust healthcare data systems for NITDA Hackathon.
+            </p>
+            <a
+              href="https://github.com/TeamShieldX/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary"
+              style={{ fontSize: '0.8rem', padding: '6px 12px' }}
+            >
+              Visit Organization
+            </a>
           </div>
         </div>
       </section>
