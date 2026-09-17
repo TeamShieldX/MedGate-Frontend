@@ -9,9 +9,12 @@ import AuditLogPage from './pages/AuditLogPage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
 
+import ScrollToTopAndHash from './components/ScrollToTopAndHash';
+
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTopAndHash />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<LandingPage />} />
