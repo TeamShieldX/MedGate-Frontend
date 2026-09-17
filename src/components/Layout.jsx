@@ -193,6 +193,24 @@ export default function Layout() {
               GitHub
             </a>
           </div>
+
+          <a
+            href="https://nitda.gov.ng"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hackathon-hero-badge"
+            style={{ marginTop: '10px', padding: '4px 8px' }}
+            title="NITDA International Cybersecurity Hackathon"
+          >
+            <img
+              src="/icschack.png"
+              alt="NITDA International Cybersecurity Hackathon"
+              style={{ height: '16px', width: 'auto', display: 'block' }}
+            />
+            <span style={{ fontSize: '0.72rem', color: '#EDEFEE', fontFamily: 'var(--font-mono)' }}>
+              NITDA Hackathon
+            </span>
+          </a>
         </div>
       </aside>
 
