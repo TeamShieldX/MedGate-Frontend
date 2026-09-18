@@ -89,9 +89,6 @@ export default function DashboardOverviewPage() {
             <span className="status-badge granted font-mono" style={{ fontSize: '0.74rem' }}>
               ● Zero-Trust Session Active
             </span>
-            <span className="status-badge neutral font-mono" style={{ fontSize: '0.74rem' }}>
-              Gateway v1.0.0
-            </span>
           </div>
           <h1>Workforce Console Overview</h1>
           <p style={{ marginTop: '4px', fontSize: '0.92rem' }}>
