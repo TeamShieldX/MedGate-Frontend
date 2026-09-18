@@ -11,12 +11,19 @@ export default function PatientCard({ patient, role }) {
     ? `${patient.firstName || ''} ${patient.lastName || ''}`.trim()
     : null;
 
+  const formattedId = patient.id && patient.id.length > 16
+    ? `pat-${patient.id.substring(0, 8)}`
+    : patient.id;
+
+  const rawBirthDate = patient.birthDate || '—';
+  const formattedBirthDate = rawBirthDate.includes('T') ? rawBirthDate.split('T')[0] : rawBirthDate;
+
   return (
     <div className="tech-box" style={{ margin: 0 }}>
       <div className="tech-box-header">
         <div>
           <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block' }}>
-            Patient ID: {patient.id}
+            Patient ID: <span className="font-mono">{formattedId}</span>
           </span>
           <h3 style={{ marginTop: '4px', fontSize: '1.15rem' }}>
             {hasName ? (
@@ -35,7 +42,7 @@ export default function PatientCard({ patient, role }) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.88rem' }}>
         <div>
           <span style={{ color: 'var(--text-secondary)' }}>Birth Date: </span>
-          <span className="font-mono">{patient.birthDate || '—'}</span>
+          <span className="font-mono">{formattedBirthDate}</span>
         </div>
 
         <div>
