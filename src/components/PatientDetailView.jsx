@@ -88,6 +88,13 @@ export default function PatientDetailView({ patient, role }) {
     ? `${patient.firstName || ''} ${patient.lastName || ''}`.trim()
     : null;
 
+  const formattedId = patient.id && patient.id.length > 16
+    ? `pat-${patient.id.substring(0, 8)}`
+    : patient.id;
+
+  const rawBirthDate = patient.birthDate || '—';
+  const formattedBirthDate = rawBirthDate.includes('T') ? rawBirthDate.split('T')[0] : rawBirthDate;
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* Patient Header Summary */}
@@ -95,7 +102,7 @@ export default function PatientDetailView({ patient, role }) {
         <div className="tech-box-header">
           <div>
             <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-              Patient Record Identifier: <span className="font-mono">{patient.id}</span>
+              Patient Record Identifier: <span className="font-mono">{formattedId}</span>
             </span>
             <h2 style={{ marginTop: '4px' }}>
               {canViewPII ? (
@@ -117,7 +124,7 @@ export default function PatientDetailView({ patient, role }) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginTop: '16px' }}>
           <div>
             <span className="form-label">Date of birth</span>
-            <span className="font-mono">{patient.birthDate || '—'}</span>
+            <span className="font-mono">{formattedBirthDate}</span>
           </div>
 
           <div>
