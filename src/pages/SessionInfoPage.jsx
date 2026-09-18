@@ -80,15 +80,6 @@ export default function SessionInfoPage() {
             </span>
           </div>
         </div>
-
-        <div style={{ marginTop: '18px', paddingTop: '14px', borderTop: '1px solid var(--border-subtle)' }}>
-          <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>
-            Authorization Token Header
-          </span>
-          <div style={{ backgroundColor: 'var(--code-bg)', padding: '10px 14px', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', wordBreak: 'break-all' }}>
-            Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.{btoa(JSON.stringify({ sub: userIdDisplay, role: currentRole, iss: "medgate-gateway" }))}.e30
-          </div>
-        </div>
       </div>
 
       {/* Admin Diagnostic & System Telemetry Section */}
